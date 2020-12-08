@@ -80,12 +80,6 @@ namespace CafeDunyasi
             app.UseAuthorization();
 
             app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
-            //var supportedCultres = new[] { "tr", "en" };
-            //var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultres[0])
-            //                                .AddSupportedCultures(supportedCultres)
-            //                                .AddSupportedUICultures(supportedCultres);
-
-            //app.UseRequestLocalization(localizationOptions);
 
             app.UseEndpoints(endpoints =>
             {
