@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CafeDunyasi.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<Users>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -19,7 +19,5 @@ namespace CafeDunyasi.Data
         public DbSet<PostComments> PostComments { get; set; }
         public DbSet<PostLikes> PostLikes { get; set; }
         public DbSet<Posts> Posts { get; set; }
-        public DbSet<Stories> Stories { get; set; }
-        //public DbSet<Users> Users { get; set; }
     }
 }

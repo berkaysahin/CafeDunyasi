@@ -1,4 +1,5 @@
 using CafeDunyasi.Data;
+using CafeDunyasi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -50,8 +51,18 @@ namespace CafeDunyasi
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<Users, IdentityRole>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.Configure<IdentityOptions>(options =>
+                {
+                    options.Password.RequiredLength = 5;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                }
+            );
+
             services.AddControllersWithViews()
                     .AddRazorRuntimeCompilation();
             services.AddRazorPages();
