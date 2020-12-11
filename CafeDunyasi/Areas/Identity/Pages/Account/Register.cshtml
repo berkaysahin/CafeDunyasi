@@ -1,73 +1,117 @@
 ﻿@page
 @model RegisterModel
+
 @{
     ViewData["Title"] = "Kayıt Ol";
 }
 
-<h1>@ViewData["Title"]</h1>
+@{
+    Layout = "~/Views/Shared/_LoginSignupLayout.cshtml";
+}
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Yeni kullanıcı oluştur.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Name"></label>
-                <input asp-for="Input.Name" class="form-control" />
-                <span asp-validation-for="Input.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Surname"></label>
-                <input asp-for="Input.Surname" class="form-control" />
-                <span asp-validation-for="Input.Surname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
+<h1 style="color: white">Cafe Dünyası</h1>
+
+<div class="container">
+    <div class="col-md-12">
         <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal templatemo-login-form-2">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>@ViewData["Title"]</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="templatemo-one-signin col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Input.Name" class="control-label"></label>
+                                    <div class="templatemo-input-icon-container">
+                                        <i class="fa fa-user"></i>
+                                        <input asp-for="Input.Name" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Input.Surname" class="control-label"></label>
+                                    <div class="templatemo-input-icon-container">
+                                        <input asp-for="Input.Surname" class="form-control" />
+                                        <i class="fa fa-lock"></i>
+                                        <span asp-validation-for="Input.Surname" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Input.Email" class="control-label"></label>
+                                    <div class="templatemo-input-icon-container">
+                                        <input asp-for="Input.Email" class="form-control" />
+                                        <i class="fa fa-lock"></i>
+                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Input.Password" class="control-label"></label>
+                                    <div class="templatemo-input-icon-container">
+                                        <input asp-for="Input.Password" class="form-control" />
+                                        <i class="fa fa-lock"></i>
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Input.ConfirmPassword" class="control-label"></label>
+                                    <div class="templatemo-input-icon-container">
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" />
+                                        <i class="fa fa-lock"></i>
+                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-warning">Register</button>
+                            </div>
+                        </div>
                         <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
+                            <a asp-page="./Login">Hesabın zaten var mı? Giriş yap.</a>
                         </p>
                     </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
+                    <div class="templatemo-other-signin col-md-6">
+                        <label class="margin-bottom-15">
+                            Kafelerin sosyal medyasına hoş geldin!
+                        </label>
+                        <a class="btn btn-block margin-bottom-15">
+                            <i class="fa fa-square" style="color:whitesmoke"></i> İşletmenin menüsünü kafeye gitmeden görebilme imkanı.
+                        </a>
+                        <a class="btn btn-block margin-bottom-15">
+                            <i class="fa fa-square" style="color:whitesmoke"></i> İşletmeler sizi memnun etmek için en güzel sunumlarını hazırlayacaklar.
+                        </a>
+                        <a class="btn btn-block">
+                            <i class="fa fa-square" style="color:whitesmoke"></i> Sevdiğiniz mekanları artık daha yakından takip edebileceksiniz.
+                        </a>
+                    </div>
+                </div>
+            </form>
         </section>
     </div>
 </div>

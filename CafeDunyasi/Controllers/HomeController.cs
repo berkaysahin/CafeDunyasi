@@ -1,4 +1,5 @@
 ﻿using CafeDunyasi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace CafeDunyasi.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IHtmlLocalizer<HomeController> _localizer;
