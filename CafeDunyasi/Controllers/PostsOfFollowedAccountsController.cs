@@ -14,17 +14,16 @@ using System.Threading.Tasks;
 namespace CafeDunyasi.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class PostsOfFollowedAccountsController : Controller
     {
-        private readonly IHtmlLocalizer<HomeController> _localizer;
-        private readonly ILogger<HomeController> _logger;
+        private readonly IHtmlLocalizer<PostsOfFollowedAccountsController> _localizer;
+        private readonly ILogger<PostsOfFollowedAccountsController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IHtmlLocalizer<HomeController> localizer)
+        public PostsOfFollowedAccountsController(ILogger<PostsOfFollowedAccountsController> logger, IHtmlLocalizer<PostsOfFollowedAccountsController> localizer)
         {
             _logger = logger;
             _localizer = localizer;
         }
-
         public IActionResult Index()
         {
             return View();

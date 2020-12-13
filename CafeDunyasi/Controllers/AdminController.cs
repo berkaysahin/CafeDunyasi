@@ -9,7 +9,7 @@ namespace CafeDunyasi.Controllers
 {
     public class AdminController : Controller
     {
-        [Authorize (Roles = "Admin")] // [AllowAnonymous] ile herkes ulaşsın diyebiliyoruz
+        [Authorize (Roles = "Admin")]
         public IActionResult Index()
         {
             return View();

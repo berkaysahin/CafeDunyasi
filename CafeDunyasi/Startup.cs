@@ -32,7 +32,7 @@ namespace CafeDunyasi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLocalization(opt => { opt.ResourcesPath = "Resources/Localization"; });
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
             services.Configure<RequestLocalizationOptions>(
                     opt =>

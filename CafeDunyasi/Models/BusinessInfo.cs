@@ -10,6 +10,9 @@ namespace CafeDunyasi.Models
     {
         [Key]
         public int Id { get; set; }
+        
+        [Required]
+        public int UsersID { get; set; }
 
         [Required]
         [StringLength(20)]

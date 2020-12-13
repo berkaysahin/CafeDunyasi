@@ -1,17 +1,23 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CafeDunyasi</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
 </head>
-<body>
+<body style="background-color: #ff611d">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3" style="background: linear-gradient(180deg, rgba(255,184,14,1) 0%, rgba(255,184,14,1) 58%, rgba(255,126,24,1) 79%, rgba(255,97,29,1) 100%);">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CafeDunyasi</a>
+                @*<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@localizer["ProjectName"]</a>*@
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/navbar-brand.png" style="height:32px; width:auto" />
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,20 +26,23 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@localizer["Explore"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PostsOfFollowedAccounts" asp-action="Index">Posts Of Followed Accounts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             if (User.IsInRole("Admin"))
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
-                                </li>
-                            }
-                        }
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+            </li>
+}
+    }
                         <li class="nav-link">
                             <partial name="_Culture" />
                         </li>
@@ -48,11 +57,14 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <div style="clear:both;"></div>
+
+    <footer class="footer text-muted" style="background: linear-gradient(0deg, rgba(255,184,14,1) 0%, rgba(255,184,14,1) 58%, rgba(255,126,24,1) 79%, rgba(255,97,29,1) 100%);">
         <div class="container">
             &copy; 2020 - CafeDunyasi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
