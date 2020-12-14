@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CafeDunyasi.Data;
 using CafeDunyasi.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,40 +19,83 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<Users> _userManager;
         private readonly SignInManager<Users> _signInManager;
 
+        private readonly ApplicationDbContext _context;
+
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
         public ActivateBusinessAccountModel(
             UserManager<Users> userManager,
-            SignInManager<Users> signInManager)
+            SignInManager<Users> signInManager,
+            ApplicationDbContext context,
+            IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-        }
 
-        public string Username { get; set; }
+            _context = context;
+
+            _webHostEnvironment = webHostEnvironment;
+        }
 
         [TempData]
         public string StatusMessage { get; set; }
 
+        public bool BusinessAccount { get; set; }
+
+        public string ProfileImageName { get; set; }
+        public string MenuImageName { get; set; }
+
         [BindProperty]
         public InputModel Input { get; set; }
-
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required]
+            [Display(Name = "Bussiness Name")]
+            public string BusinessName { get; set; }
+
+            [Required]
+            [Display(Name = "City")]
+            public string City { get; set; }
+
+            [Required]
+            [Display(Name = "Profile Image")]
+            public IFormFile ProfileImage { get; set; }
+
+            [Required]
+            [Display(Name = "Menu Image")]
+            public IFormFile MenuImage { get; set; }
+
+            [Display(Name = "Profile Image")]
+            public IFormFile ProfileImageUpdate { get; set; }
+
+            [Display(Name = "Menu Image")]
+            public IFormFile MenuImageUpdate { get; set; }
         }
 
         private async Task LoadAsync(Users user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            Users _user = _context.Users.Single(res => res.Id == _userManager.GetUserId(User));
+            BusinessAccount = _user.BusinessAccount;
 
-            Username = userName;
-
-            Input = new InputModel
+            try
             {
-                PhoneNumber = phoneNumber
-            };
+                BusinessInfo bs = _context.BusinessInfo.Single(res => res.UsersID == _userManager.GetUserId(User));
+                //City = bs.City;
+
+                if(bs != null)
+                {
+                    Input = new InputModel
+                    {
+                        BusinessName = bs.Name,
+                        City = bs.City,
+                    };
+                    ProfileImageName = bs.AvatarImg;
+                    MenuImageName = bs.MenuImg;
+                }
+            }catch
+            {
+
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -63,7 +110,35 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        private string UploadFile(IFormFile img, string path)
+        {
+           string fileName = null;
+            if(img != null)
+            {
+                string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+                fileName = Guid.NewGuid().ToString() + "-" + img.FileName;
+                string filePath = Path.Combine(uploadDir, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    img.CopyTo(fileStream);
+                }
+            }
+            return fileName;
+        }
+
+        private void DeleteFile(IFormFile img, string path, string file)
+        {
+            string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+            string fileURL = Path.Combine(uploadDir, file);
+
+            if (System.IO.File.Exists(fileURL))
+            {
+                System.IO.File.Delete(fileURL);
+            }
+        }
+
+        public async Task<IActionResult> OnPostAsync(string button)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -71,26 +146,100 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            if (!ModelState.IsValid)
+            Users _user = _context.Users.Single(res => res.Id == _userManager.GetUserId(User));
+            if(_user.BusinessAccount == false && button == "Activate")
             {
-                await LoadAsync(user);
-                return Page();
-            }
+                _user.BusinessAccount = true;
+                _context.SaveChanges();
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+                string profileImage = UploadFile(Input.ProfileImage, "images/BusinessImages/profile");
+                string menuImage = UploadFile(Input.MenuImage, "images/BusinessImages/menu");
+
+                BusinessInfo bf = new BusinessInfo();
+                bf.AvatarImg = profileImage;
+                bf.City = Input.City;
+                bf.MenuImg = menuImage;
+                bf.Name = Input.BusinessName;
+                bf.UsersID = _userManager.GetUserId(User);
+
+                _context.BusinessInfo.Add(bf);
+                _context.SaveChanges();
+
+                await _userManager.AddToRoleAsync(user, "BusinessAccount");
+
+                StatusMessage = "İşletme profili açıldı.";
+            }
+            else if (_user.BusinessAccount == true && button == "Remove")
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                BusinessInfo bs = _context.BusinessInfo.Single(res => res.UsersID == _userManager.GetUserId(User));
+                _user.BusinessAccount = false;
+                _context.BusinessInfo.Remove(_context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(User)));
+                _context.SaveChanges();
+
+                DeleteFile(Input.ProfileImage, "images/BusinessImages/profile", bs.AvatarImg);
+                DeleteFile(Input.MenuImage, "images/BusinessImages/menu", bs.MenuImg);
+
+                await _userManager.RemoveFromRoleAsync(user, "BusinessAccount");
+
+                StatusMessage = "İşletme profili kapatıldı.";
+            }
+            else
+            {
+                BusinessInfo bs = _context.BusinessInfo.Single(res => res.UsersID == _userManager.GetUserId(User));
+
+                string profileImage;
+                string menuImage;
+
+                try
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
+                    if (Input.ProfileImageUpdate != null)
+                        if (Input.ProfileImageUpdate.FileName != bs.AvatarImg)
+                    {
+                        DeleteFile(Input.ProfileImage, "images/BusinessImages/profile", bs.AvatarImg);
+                        profileImage = UploadFile(Input.ProfileImageUpdate, "images/BusinessImages/profile");
+                        bs.AvatarImg = profileImage;
+                    }
                 }
+                catch
+                {
+
+                }
+
+                try
+                {
+                    if(Input.MenuImageUpdate != null)
+                    if (Input.MenuImageUpdate.FileName != bs.MenuImg)
+                    {
+                        DeleteFile(Input.MenuImageUpdate, "images/BusinessImages/menu", bs.MenuImg);
+                        menuImage = UploadFile(Input.MenuImage, "images/BusinessImages/menu");
+                        bs.MenuImg = menuImage;
+                    }
+                }
+                catch
+                {
+
+                }
+
+                if (Input.City != bs.City)
+                    bs.City = Input.City;
+
+                if (Input.BusinessName != bs.Name)
+                    bs.Name = Input.BusinessName;
+
+                _context.SaveChanges();
+
+                StatusMessage = "İşletme profili güncellendi.";
             }
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            //await _signInManager.RefreshSignInAsync(user);
+            
             return RedirectToPage();
+
+            //if (!ModelState.IsValid)
+            //{
+            //    await LoadAsync(user);
+            //    return Page();
+            //}
         }
     }
 }

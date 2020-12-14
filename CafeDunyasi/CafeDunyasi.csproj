@@ -24,4 +24,10 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\BusinessImages\menu\" />
+    <Folder Include="wwwroot\images\BusinessImages\post\" />
+    <Folder Include="wwwroot\images\BusinessImages\profile\" />
+  </ItemGroup>
+
 </Project>

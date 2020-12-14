@@ -12,7 +12,7 @@ namespace CafeDunyasi.Models
         public int Id { get; set; }
         
         [Required]
-        public int UsersID { get; set; }
+        public string UsersID { get; set; }
 
         [Required]
         [StringLength(20)]
@@ -20,19 +20,17 @@ namespace CafeDunyasi.Models
         public string Name { get; set; }
 
         [Required]
-        public string Location { get; set; }
+        public string City { get; set; }
+
+        //[Required]
+        //[StringLength(50)]
+        //[MaxLength(50)]
+        //public string EMail { get; set; }
 
         [Required]
-        [StringLength(50)]
-        [MaxLength(50)]
-        public string EMail { get; set; }
+        public string AvatarImg { get; set; }
 
         [Required]
-        public string AvatarImgURL { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        [MaxLength(50)]
-        public string MenuImgURL { get; set; }
+        public string MenuImg { get; set; }
     }
 }
