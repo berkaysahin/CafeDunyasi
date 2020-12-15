@@ -12,7 +12,7 @@
 </head>
 <body style="background-color: #ff611d">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3" style="background: linear-gradient(180deg, rgba(255,184,14,1) 0%, rgba(255,184,14,1) 58%, rgba(255,126,24,1) 79%, rgba(255,97,29,1) 100%);">
+        <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3" style="background: linear-gradient(180deg, rgba(255,184,14,1) 0%, rgba(255,184,14,1) 58%, rgba(255,126,24,1) 79%, rgba(255,97,29,1) 100%);">
             <div class="container">
                 @*<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@localizer["ProjectName"]</a>*@
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -29,20 +29,26 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@localizer["Explore"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PostsOfFollowedAccounts" asp-action="Index">Posts Of Followed Accounts</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PostsOfFollowedAccounts" asp-action="Index">Posts Of Followed Cafes</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("BusinessAccount"))
+                            {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Send Post</a>
                         </li>
+                            }
+                        }
                         @if (User.Identity.IsAuthenticated)
                         {
                             if (User.IsInRole("Admin"))
                             {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
-            </li>
-}
-    }
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                                    </li>
+                            }
+                         }
                         <li class="nav-link">
                             <partial name="_Culture" />
                         </li>
@@ -51,6 +57,7 @@
             </div>
         </nav>
     </header>
+    <div style="margin-bottom:75px"></div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

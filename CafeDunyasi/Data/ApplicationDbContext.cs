@@ -19,5 +19,6 @@ namespace CafeDunyasi.Data
         public DbSet<PostComments> PostComments { get; set; }
         public DbSet<PostLikes> PostLikes { get; set; }
         public DbSet<Posts> Posts { get; set; }
+        public DbSet<City> City { get; set; }
     }
 }

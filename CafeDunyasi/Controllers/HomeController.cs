@@ -1,9 +1,11 @@
-﻿using CafeDunyasi.Models;
+﻿using CafeDunyasi.Data;
+using CafeDunyasi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,16 +20,18 @@ namespace CafeDunyasi.Controllers
     {
         private readonly IHtmlLocalizer<HomeController> _localizer;
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, IHtmlLocalizer<HomeController> localizer)
+        public HomeController(ILogger<HomeController> logger, IHtmlLocalizer<HomeController> localizer, ApplicationDbContext context)
         {
             _logger = logger;
             _localizer = localizer;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
         }
 
         [HttpPost]

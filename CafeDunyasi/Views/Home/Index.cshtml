@@ -1,8 +1,9 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model IEnumerable<CafeDunyasi.Models.Posts>
 
 @{ ViewData["Title"] = "Home Page"; }
 
-<div class="post">
+@*<div class="post">
     <div class="up">
         <img src="https://onlinejpgtools.com/images/examples-onlinejpgtools/coffee-resized.jpg" style="height:40px; width:auto; border-radius:20px" />
         Berkay Şahin
@@ -11,4 +12,44 @@
     <div class="bottom">
         <i class="fa fa-heart" style="font-size:24px"></i> 5235
     </div>
-</div>
+</div>*@
+
+
+@{
+    int i = 0;
+}
+
+@if(Model.Any())
+{
+    @foreach (var item in Model)
+    {
+
+        if (i % 2 == 0)
+        {
+            <div style="clear:left;"></div>
+        }
+        i++;
+
+
+        <div class="post">
+            <div class="up">
+                @*<img src="@("~/images/BusinessImages/post/" + item.Image)" style="height:40px; width:auto; border-radius:20px" />
+                    Berkay Şahin*@
+            </div>
+            <img src="@("~/images/BusinessImages/post/" + item.Image)" class="img" asp-append-version="true" />
+            <div class="bottom">
+                @if (item.Description != "" && item.Description != null)
+                {
+                <div>Description: @item.Description</div>
+                }
+
+                <i class="fa fa-heart" style="font-size:24px"></i> 5234
+            </div>
+        </div>
+    }
+}
+else
+{
+    <font style="font-size:28px">No posts yet.</font>
+}
+

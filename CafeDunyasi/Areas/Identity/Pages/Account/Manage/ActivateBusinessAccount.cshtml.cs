@@ -42,6 +42,8 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
 
         public bool BusinessAccount { get; set; }
 
+        public List<string> City { get; set; }
+
         public string ProfileImageName { get; set; }
         public string MenuImageName { get; set; }
 
@@ -96,6 +98,12 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             {
 
             }
+            City = new List<string>();
+            var ct = _context.City.ToList();
+            foreach (var item in ct)
+            {
+                City.Add(item.Name);
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -127,7 +135,7 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             return fileName;
         }
 
-        private void DeleteFile(IFormFile img, string path, string file)
+        private void DeleteFile(string path, string file)
         {
             string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
             string fileURL = Path.Combine(uploadDir, file);
@@ -145,8 +153,9 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+            string userId = _userManager.GetUserId(User);
 
-            Users _user = _context.Users.Single(res => res.Id == _userManager.GetUserId(User));
+            Users _user = _context.Users.Single(res => res.Id == userId);
             if(_user.BusinessAccount == false && button == "Activate")
             {
                 _user.BusinessAccount = true;
@@ -160,7 +169,7 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
                 bf.City = Input.City;
                 bf.MenuImg = menuImage;
                 bf.Name = Input.BusinessName;
-                bf.UsersID = _userManager.GetUserId(User);
+                bf.UsersID = userId;
 
                 _context.BusinessInfo.Add(bf);
                 _context.SaveChanges();
@@ -171,13 +180,24 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             }
             else if (_user.BusinessAccount == true && button == "Remove")
             {
-                BusinessInfo bs = _context.BusinessInfo.Single(res => res.UsersID == _userManager.GetUserId(User));
+                BusinessInfo bs = _context.BusinessInfo.Single(res => res.UsersID == userId);
                 _user.BusinessAccount = false;
-                _context.BusinessInfo.Remove(_context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(User)));
+                _context.BusinessInfo.Remove(_context.BusinessInfo.Single(x => x.UsersID == userId));
                 _context.SaveChanges();
 
-                DeleteFile(Input.ProfileImage, "images/BusinessImages/profile", bs.AvatarImg);
-                DeleteFile(Input.MenuImage, "images/BusinessImages/menu", bs.MenuImg);
+                DeleteFile("images/BusinessImages/profile", bs.AvatarImg);
+                DeleteFile("images/BusinessImages/menu", bs.MenuImg);
+
+                var postList = _context.Posts.ToList();
+                foreach (var item in postList)
+                {
+                    if (item.UserID == userId)
+                    {
+                        DeleteFile("images/BusinessImages/post", item.Image);
+
+                        _context.Posts.Remove(item);
+                    }
+                }
 
                 await _userManager.RemoveFromRoleAsync(user, "BusinessAccount");
 
@@ -185,7 +205,7 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             }
             else
             {
-                BusinessInfo bs = _context.BusinessInfo.Single(res => res.UsersID == _userManager.GetUserId(User));
+                BusinessInfo bs = _context.BusinessInfo.Single(res => res.UsersID == userId);
 
                 string profileImage;
                 string menuImage;
@@ -195,7 +215,7 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
                     if (Input.ProfileImageUpdate != null)
                         if (Input.ProfileImageUpdate.FileName != bs.AvatarImg)
                     {
-                        DeleteFile(Input.ProfileImage, "images/BusinessImages/profile", bs.AvatarImg);
+                        DeleteFile("images/BusinessImages/profile", bs.AvatarImg);
                         profileImage = UploadFile(Input.ProfileImageUpdate, "images/BusinessImages/profile");
                         bs.AvatarImg = profileImage;
                     }
@@ -210,7 +230,7 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
                     if(Input.MenuImageUpdate != null)
                     if (Input.MenuImageUpdate.FileName != bs.MenuImg)
                     {
-                        DeleteFile(Input.MenuImageUpdate, "images/BusinessImages/menu", bs.MenuImg);
+                        DeleteFile("images/BusinessImages/menu", bs.MenuImg);
                         menuImage = UploadFile(Input.MenuImage, "images/BusinessImages/menu");
                         bs.MenuImg = menuImage;
                     }

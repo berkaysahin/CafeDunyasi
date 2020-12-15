@@ -18,12 +18,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.City"></label>
-                <input asp-for="Input.City" class="form-control" multiple />
+                @*<input asp-for="Input.City" class="form-control" multiple />*@
+                <select asp-for="Input.City" class="form-control" asp-items="new SelectList(Model.City)">
+                </select>
                 <span asp-validation-for="Input.City" class="text-danger"></span>
             </div>
             @if (Model.BusinessAccount)
             {
-                <img src="@("../../../../../images/BusinessImages/profile/" + Model.ProfileImageName)" />
+                <img src="@("~/images/BusinessImages/profile/" + Model.ProfileImageName)"  asp-append-version="true" />
             }
         <div class="form-group">
             @if (Model.BusinessAccount)
@@ -41,7 +43,7 @@
         </div>
             @if (Model.BusinessAccount)
             {
-                <img src="@("../../../../../images/BusinessImages/menu/" + Model.MenuImageName)" />
+                <img src="@("~/images/BusinessImages/menu/" + Model.MenuImageName)"  asp-append-version="true" />
             }
         <div class="form-group">
             @if (Model.BusinessAccount)
@@ -66,10 +68,10 @@
                 <button id="update-profile-button" name="button" value="Update" class="btn btn-warning">Update</button>
             }
         </form>
-        <form method="post">
+        <form onclick="return confirm('Are you sure you want to delete this?')">
             @if (Model.BusinessAccount)
             {
-            <button id="update-profile-button" name="button" value="Remove" class="btn btn-danger" style="margin-top: 10px">Remove</button>
+                <button id="update-profile-button" name="button" value="Remove" class="btn btn-danger" style="margin-top: 10px">Remove</button>
             }
         </form>
         </div>

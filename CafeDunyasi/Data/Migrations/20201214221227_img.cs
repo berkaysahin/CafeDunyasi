@@ -2,30 +2,29 @@
 
 namespace CafeDunyasi.Data.Migrations
 {
-    public partial class city : Migration
+    public partial class img : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Location",
-                table: "BusinessInfo");
+                name: "ImageURL",
+                table: "Posts");
 
             migrationBuilder.AddColumn<string>(
-                name: "City",
-                table: "BusinessInfo",
-                nullable: false,
-                defaultValue: "");
+                name: "Image",
+                table: "Posts",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "City",
-                table: "BusinessInfo");
+                name: "Image",
+                table: "Posts");
 
             migrationBuilder.AddColumn<string>(
-                name: "Location",
-                table: "BusinessInfo",
+                name: "ImageURL",
+                table: "Posts",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
