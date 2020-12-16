@@ -21,6 +21,8 @@ namespace CafeDunyasi.Models
 
         public DateTime Date { get; set; }
 
+        public int LikeCount { get; set; } = 0;
+
         [Required]
         [NotMapped]
         public IFormFile ImageFile { get; set; }

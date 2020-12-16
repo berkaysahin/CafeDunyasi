@@ -24,6 +24,7 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
         }
 
         public string Username { get; set; }
+        public string UserID { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -44,6 +45,8 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+
+            UserID = _userManager.GetUserId(User);
 
             Input = new InputModel
             {

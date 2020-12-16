@@ -6,6 +6,8 @@
 }
 
 <h4>@ViewData["Title"]</h4>
+<a asp-controller="Profile" asp-action="Index" asp-route-data="@Model.UserID" class="btn btn-success" style="margin-bottom:20px">Profilini başkasının gözünden gör</a>
+
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="row">
     <div class="col-md-6">

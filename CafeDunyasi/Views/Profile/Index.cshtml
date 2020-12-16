@@ -1,0 +1,76 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model IEnumerable<CafeDunyasi.Models.Posts>
+
+@{ ViewData["Title"] = "Profile"; }
+
+@if (ViewBag.error == "1")
+{
+    <font style="font-size:28px">Bir hata oluştu.</font>
+}
+else
+{
+    <center>
+        <div style="margin-bottom: 20px">
+            <img src="@("~/images/BusinessImages/profile/" + @ViewBag.profileImg)" style="height:150px; width:150px; border-radius:75px" asp-append-version="true" />
+            <h3 style="margin-top:20px">@ViewBag.BusinessName</h3>
+            <h5 style="margin-top:20px">City: @ViewBag.City</h5>
+        </div>
+        <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">Show Menu</button>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Menu</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="@("~/images/BusinessImages/menu/" + @ViewBag.menuImage)" style="width:100%; height:auto;" asp-append-version="true" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </center>
+
+    <div style="margin-bottom: 20px"></div>
+
+    int i = 0;
+
+    @if (Model.Any())
+    {
+        @foreach (var item in Model)
+        {
+
+            if (i % 2 == 0)
+            {
+                <div style="clear:left;"></div>
+            }
+            i++;
+
+            <div class="post">
+                <div class="up">
+                    <img src="@("~/images/BusinessImages/profile/" + @ViewBag.profileImg)" style="height:40px; width:40px; border-radius:20px" asp-append-version="true" />
+                    <a asp-controller="Profile" asp-action="Index" asp-route-data="@item.UserID">@ViewBag.BusinessName</a>
+                </div>
+                <img src="@("~/images/BusinessImages/post/" + item.Image)" class="img" asp-append-version="true" />
+                <div class="bottom">
+                    @if (item.Description != "" && item.Description != null)
+                    {
+                        <div>Description: @item.Description</div>
+                    }
+
+                    <i class="fa fa-heart" style="font-size:24px"></i> 5234
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <font style="font-size:28px">No posts yet.</font>
+    }
+}

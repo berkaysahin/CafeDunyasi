@@ -13,6 +13,6 @@ namespace CafeDunyasi.Models
 
         public int PostID { get; set; }
 
-        public int UserID { get; set; }
+        public string UserID { get; set; }
     }
 }
