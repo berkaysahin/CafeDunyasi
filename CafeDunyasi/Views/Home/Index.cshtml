@@ -3,7 +3,6 @@
 
 @{ ViewData["Title"] = "Home Page"; }
 
-
 <div class="form-group">
     <form method="post">
         <button type="submit" name="data" class="btn btn-primary" value="all">All</button>
@@ -17,6 +16,7 @@
 @{
     int i = 0;
     var like = (List<PostLikes>)ViewData["Likes"];
+    string strColor = "";
 }
 
 @if (Model.Any())
@@ -29,7 +29,7 @@
             <div style="clear:left;"></div>
         }
         i++;
-
+        
         <div class="post">
             <div class="up">
                 <img src="@("~/images/BusinessImages/profile/" + @ViewBag.profileImg)" style="height:40px; width:40px auto; border-radius:20px" asp-append-version="true" />
@@ -41,27 +41,22 @@
                 {
                     <div>Description: @item.Description</div>
                 }
-            <form method="post">
                 @foreach (var x in like)
                 {
-
+                    <input type="hidden" id="postid" name="postid" value="@item.Id">
                     @if (x.PostID == item.Id)
                     {
-                        @*<input type="hidden" id="postid" name="postid" value="@item.Id">*@
-                        <button type="submit" name="data" style="all: unset; color: blue; -webkit-text-fill-color: blue; cursor: pointer; color:blue;" value="unlike"><i class="fa fa-heart" style="font-size:24px"></i></button>
+                        strColor="blue";
+                        
                     }
                     else
                     {
-                        <button type="submit" name="data" style="all: unset; color: blue; -webkit-text-fill-color: black; cursor: pointer; color:black;" value="liked"><i class="fa fa-heart" style="font-size:24px"></i></button>
+                        strColor="black";
                     }
+                    <button onclick="likeAt(@item.Id)" id="likeButton" name="data" style="all: unset; cursor: pointer;" value="unlike"><i class="fa fa-heart" style="font-size:24px;  color: @(strColor)"></i></button>
                 }
-                @if (like.Count == 0)
-                {
-                    <button type="submit" name="data" style="all: unset; color: blue; -webkit-text-fill-color: black; cursor: pointer; color:black;" value="liked"><i class="fa fa-heart" style="font-size:24px"></i></button>
-                }
-            </form>
-                    @item.LikeCount
-                </div>
+                @item.LikeCount
+            </div>
         </div>
     }
 }
@@ -69,3 +64,38 @@ else
 {
     <font style="font-size:28px">No posts yet.</font>
 }
+
+<script type="text/javascript">
+    function likeAt(_id) {
+        //console.log(_id);
+        //alert(_id);
+        debugger;
+        $.ajax({
+            url: '@Url.Action("Like","Home")',
+            data: {
+                postId: _id
+            },
+            error: function () {
+                alert("error");
+            },
+            dataType: 'jsonp',
+            success: function (data) {
+                var a = document.getElementById('likeButton');
+                if (a.style.color == 'black') {
+                    a.style.color = 'blue';
+                } else {
+                    a.style.color = 'black';
+                }
+
+                //if (_whichButton == "blue") {
+                //    var a = document.getElementById('likeButton');
+                //    a.style.color = 'black';
+                //} else {
+                //    var a = document.getElementById('black');
+                //    a.style.color = 'blue';
+                //}
+            },
+            type: 'GET'
+        });
+    }
+</script>

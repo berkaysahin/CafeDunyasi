@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CafeDunyasi.Controllers
 {
@@ -74,29 +75,6 @@ namespace CafeDunyasi.Controllers
                 ViewBag.Cities = City;
 
                 return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
-            }else if (data == "liked")
-            {
-                Posts posts = _context.Posts.Single(x => x.UserID == userId);
-                posts.LikeCount++;
-
-                PostLikes postLikes = new PostLikes();
-                postLikes.PostID = Convert.ToInt32(data);
-                postLikes.UserID = userId;
-                _context.PostLikes.Add(postLikes);
-
-                _context.SaveChanges();
-                return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
-            }
-            else if (data == "unlike")
-            {
-                //Posts posts = _context.Posts.Single(x => x.UserID == userId);
-                //if(posts.LikeCount > 0)
-                //    posts.LikeCount--;
-
-                //_context.PostLikes.Remove(_context.PostLikes.Single(res => res.UserID == userId));
-
-                //_context.SaveChanges();
-                return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
             }
             else
             {
@@ -118,10 +96,67 @@ namespace CafeDunyasi.Controllers
 
                 return View(_context.Posts.Where(x => cityArray.Contains(x.UserID)).OrderByDescending(x => x.Date).Take(30).ToList());
             }
+
+            //else if (data == "liked")
+            //{
+            //    Posts posts = _context.Posts.Single(x => x.UserID == userId);
+            //    posts.LikeCount++;
+
+            //    PostLikes postLikes = new PostLikes();
+            //    postLikes.PostID = Convert.ToInt32(data);
+            //    postLikes.UserID = userId;
+            //    _context.PostLikes.Add(postLikes);
+
+            //    _context.SaveChanges();
+            //    return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
+            //}
+            //else if (data == "unlike")
+            //{
+            //    //Posts posts = _context.Posts.Single(x => x.UserID == userId);
+            //    //if(posts.LikeCount > 0)
+            //    //    posts.LikeCount--;
+
+            //    //_context.PostLikes.Remove(_context.PostLikes.Single(res => res.UserID == userId));
+
+            //    //_context.SaveChanges();
+            //    return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
+            //}
+        }
+
+        public JsonResult Like(string postId)
+        {
+            string userId = _userManager.GetUserId(HttpContext.User);
+            bool like = _context.PostLikes.Any(x => x.UserID == userId && x.PostID == Convert.ToInt32(postId));
+            //string result = "";
+
+            if (!like)
+            {
+                Posts posts = _context.Posts.Single(x => x.Id == Convert.ToInt32(postId));
+                posts.LikeCount++;
+
+                PostLikes postLikes = new PostLikes();
+                postLikes.PostID = Convert.ToInt32(postId);
+                postLikes.UserID = userId;
+                _context.PostLikes.Add(postLikes);
+
+                _context.SaveChanges();
+            }
+            else
+            {
+                Posts posts = _context.Posts.Single(x => x.UserID == userId);
+                if (posts.LikeCount > 0)
+                    posts.LikeCount--;
+
+                _context.PostLikes.Remove(_context.PostLikes.Single(res => res.UserID == userId));
+
+                _context.SaveChanges();
+            }
+            string x = "success";
+            return Json(x, System.Web.Mvc.JsonRequestBehavior.AllowGet);
         }
 
 
-            [HttpPost]
+        [HttpPost]
         public IActionResult CultureManagement(string culture, string returnUrl)
         {
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
