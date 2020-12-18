@@ -1,20 +1,10 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @model IEnumerable<CafeDunyasi.Models.Posts>
 
-@{ ViewData["Title"] = @localizer["Explore"]; }
+@{ ViewData["Title"] = localizer["PostsOfFollowedCafes"]; }
 
-<div class="form-group">
-    <form name="PostName" method="post" style="width:175px">
-        @localizer["City"]: <select class="form-control" asp-items="new SelectList(ViewBag.Cities)" onchange="PostName.submit()" name="data">
-        </select>
-    </form>
-    <form method="post" style="margin-top:10px;">
-        <button type="submit" name="data" class="btn btn-primary" value="all">@localizer["All"]</button>
-    </form>
-</div>
 <div style="clear:both;"></div>
 @{
-    int i = 0;
     var like = (List<PostLikes>)ViewData["Likes"];
     string strColor = "";
     bool tmp = false;
@@ -24,14 +14,7 @@
 {
     @foreach (var item in Model)
     {
-
-        if (i % 2 == 0)
-        {
-            <div style="clear:left;"></div>
-        }
-        i++;
-
-        <div class="post">
+        <div class="postSingle">
             <input type="hidden" id="postid" name="postid" value="@item.Id">
             <div class="up">
                 <img src="@("~/images/BusinessImages/profile/" + @ViewBag.profileImg)" style="height:40px; width:40px; border-radius:20px" asp-append-version="true" />
@@ -41,7 +24,7 @@
             <div class="bottom">
                 @if (item.Description != "" && item.Description != null)
                 {
-                <div>@localizer["Description"]: @item.Description</div>
+                    <div>@localizer["Description"]: @item.Description</div>
                 }
                 @foreach (var x in like)
                 {
@@ -59,7 +42,7 @@
                     }
                 }
                 <button onclick="likeAt('@(item.Id)', '@(item.Id+item.UserID)')" name="data" style="all: unset; cursor: pointer; float:left; margin-right:5px"><i class="fa fa-heart" style="font-size:24px; color: @(strColor)" id="@item.Id"></i></button>
-                @{  
+                @{
                     tmp = false;
                 }
                 <div id="@(item.Id+item.UserID)">@item.LikeCount</div>
@@ -76,7 +59,7 @@ else
     function likeAt(_id, _likeCount) {
         //console.log(_id); alert(_id); debugger;
         $.ajax({
-            url: '@Url.Action("Like","Home")',
+            url: '@Url.Action("Like", "PostsOfFollowedCafes")',
             data: {
                 postId: _id
             },

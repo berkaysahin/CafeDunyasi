@@ -96,38 +96,12 @@ namespace CafeDunyasi.Controllers
 
                 return View(_context.Posts.Where(x => cityArray.Contains(x.UserID)).OrderByDescending(x => x.Date).Take(30).ToList());
             }
-
-            //else if (data == "liked")
-            //{
-            //    Posts posts = _context.Posts.Single(x => x.UserID == userId);
-            //    posts.LikeCount++;
-
-            //    PostLikes postLikes = new PostLikes();
-            //    postLikes.PostID = Convert.ToInt32(data);
-            //    postLikes.UserID = userId;
-            //    _context.PostLikes.Add(postLikes);
-
-            //    _context.SaveChanges();
-            //    return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
-            //}
-            //else if (data == "unlike")
-            //{
-            //    //Posts posts = _context.Posts.Single(x => x.UserID == userId);
-            //    //if(posts.LikeCount > 0)
-            //    //    posts.LikeCount--;
-
-            //    //_context.PostLikes.Remove(_context.PostLikes.Single(res => res.UserID == userId));
-
-            //    //_context.SaveChanges();
-            //    return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
-            //}
         }
 
         public JsonResult Like(string postId)
         {
             string userId = _userManager.GetUserId(HttpContext.User);
             bool like = _context.PostLikes.Any(x => x.UserID == userId && x.PostID == Convert.ToInt32(postId));
-            //string result = "";
 
             if (!like)
             {
@@ -143,16 +117,19 @@ namespace CafeDunyasi.Controllers
             }
             else
             {
-                Posts posts = _context.Posts.Single(x => x.UserID == userId);
+                Posts posts = _context.Posts.Single(x => x.Id == Convert.ToInt32(postId));
                 if (posts.LikeCount > 0)
                     posts.LikeCount--;
 
-                _context.PostLikes.Remove(_context.PostLikes.Single(res => res.UserID == userId));
+                _context.PostLikes.Remove(_context.PostLikes.Single(res => res.PostID == Convert.ToInt32(postId) && res.UserID == userId));
 
                 _context.SaveChanges();
             }
-            string x = "success";
-            return Json(x, System.Web.Mvc.JsonRequestBehavior.AllowGet);
+
+            Posts postslike = _context.Posts.Single(x => x.Id == Convert.ToInt32(postId));
+            int likeCt = postslike.LikeCount;
+
+            return Json(likeCt);
         }
 
 

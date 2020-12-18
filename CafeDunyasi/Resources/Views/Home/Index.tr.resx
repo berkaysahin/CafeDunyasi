@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="All" xml:space="preserve">
+    <value>Hepsi</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Şehir</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Açıklama</value>
+  </data>
+  <data name="Explore" xml:space="preserve">
+    <value>Keşfet</value>
+  </data>
+  <data name="NoPostsYet" xml:space="preserve">
+    <value>Henüz bir paylaşım yapılmadı</value>
+  </data>
   <data name="ProjectName" xml:space="preserve">
     <value>Cafe Dünyası</value>
   </data>

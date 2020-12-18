@@ -29,14 +29,14 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@localizer["Explore"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PostsOfFollowedAccounts" asp-action="Index">Posts Of Followed Cafes</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PostsOfFollowedCafes" asp-action="Index">@localizer["PostsOfFollowedCafes"]</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             if (User.IsInRole("BusinessAccount"))
                             {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Send Post</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">@localizer["SendPost"]</a>
                         </li>
                             }
                         }

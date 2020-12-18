@@ -1,38 +1,37 @@
-﻿@model CafeDunyasi.Models.Posts
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model CafeDunyasi.Models.Posts
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = @localizer["NewPost"];
 }
 
-<h1>Create</h1>
-
-<h4>Posts</h4>
+<h1>@localizer["NewPost"]</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
+                @localizer["Image"]
                 <input asp-for="ImageFile" class="form-control" accept="image/*" multiple />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                @localizer["Description"]
                 <input asp-for="Description" class="form-control" accept="image/*" multiple />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@localizer["Send"]" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@localizer["ReturnToPosts"]</a>
 </div>
 
 @section Scripts {

@@ -117,19 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Explore" xml:space="preserve">
-    <value>Keşfet</value>
+  <data name="City" xml:space="preserve">
+    <value>Şehir</value>
   </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Çıkış</value>
+  <data name="Close" xml:space="preserve">
+    <value>Kapat</value>
   </data>
-  <data name="PostsOfFollowedCafes" xml:space="preserve">
-    <value>Takip Edilen Kafelerin Paylaşımları</value>
+  <data name="Description" xml:space="preserve">
+    <value>Açıklama</value>
   </data>
-  <data name="ProjectName" xml:space="preserve">
-    <value>Cafe Dünyası</value>
+  <data name="Menu" xml:space="preserve">
+    <value>Menü</value>
   </data>
-  <data name="SendPost" xml:space="preserve">
-    <value>Gönderi Paylaş</value>
+  <data name="NoPostsYet" xml:space="preserve">
+    <value>Henüz bir paylaşım yapılmadı</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="ShowMenu" xml:space="preserve">
+    <value>Menüyü Göster</value>
   </data>
 </root>
