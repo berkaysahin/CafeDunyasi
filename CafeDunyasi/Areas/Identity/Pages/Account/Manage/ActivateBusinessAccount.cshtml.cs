@@ -182,8 +182,36 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             {
                 BusinessInfo bs = _context.BusinessInfo.Single(res => res.UsersID == userId);
                 _user.BusinessAccount = false;
+
+                var follow = _context.FollowingAccounts.Where(x => x.BusinessID == bs.Id).ToList();
+                foreach (var item in follow)
+                {
+                    _context.FollowingAccounts.Remove(item);
+                }
+
+                var post = _context.Posts.Where(x => x.UserID == bs.UsersID).ToList();
+                var like = _context.PostLikes.ToList();
+                foreach (var item in like)
+                {
+                    foreach (var item2 in post)
+                    {
+                        if (item2.Id == item.PostID)
+                        {
+                            _context.PostLikes.Remove(item);
+                        }
+                    }
+                }
+                
+                foreach (var item in post)
+                {
+                    DeleteFile("images/BusinessImages/post", item.Image);
+                    _context.Posts.Remove(item);
+                }
+
                 _context.BusinessInfo.Remove(_context.BusinessInfo.Single(x => x.UsersID == userId));
                 _context.SaveChanges();
+
+                
 
                 DeleteFile("images/BusinessImages/profile", bs.AvatarImg);
                 DeleteFile("images/BusinessImages/menu", bs.MenuImg);
@@ -251,15 +279,7 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
                 StatusMessage = "İşletme profili güncellendi.";
             }
 
-            //await _signInManager.RefreshSignInAsync(user);
-            
             return RedirectToPage();
-
-            //if (!ModelState.IsValid)
-            //{
-            //    await LoadAsync(user);
-            //    return Page();
-            //}
         }
     }
 }

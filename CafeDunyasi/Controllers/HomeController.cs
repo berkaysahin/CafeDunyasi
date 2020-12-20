@@ -57,13 +57,11 @@ namespace CafeDunyasi.Controllers
         public IActionResult Index(string data)
         {
             string userId = _userManager.GetUserId(HttpContext.User);
-            var likes = _context.PostLikes.Where(x => x.UserID == userId);
-            ViewBag.likes = likes;
 
             if (data == "all")
             {
-                ViewBag.profileImg = _context.BusinessInfo.Single(x => x.UsersID == userId).AvatarImg;
-                ViewBag.BusinessName = _context.BusinessInfo.Single(x => x.UsersID == userId).Name;
+                ViewBag.profileImg = _context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(HttpContext.User)).AvatarImg;
+                ViewBag.BusinessName = _context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(HttpContext.User)).Name;
 
                 List<string> City = new List<string>();
                 var ct = _context.City.ToList();
@@ -73,6 +71,9 @@ namespace CafeDunyasi.Controllers
                 }
 
                 ViewBag.Cities = City;
+
+                var likes = _context.PostLikes.Where(x => x.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
+                ViewData["likes"] = likes;
 
                 return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
             }

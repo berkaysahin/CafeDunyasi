@@ -34,24 +34,6 @@ namespace CafeDunyasi.Controllers
             return View(await _context.Posts.OrderByDescending(x => x.Date).ToListAsync());
         }
 
-        // GET: Post/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var posts = await _context.Posts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (posts == null)
-            {
-                return NotFound();
-            }
-
-            return View(posts);
-        }
-
         // GET: Post/Create
         public IActionResult Create()
         {
@@ -110,34 +92,36 @@ namespace CafeDunyasi.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserID,ImageURL,Date")] Posts posts)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserID,Image,Description,Date,LikeCount")] Posts posts)
         {
             if (id != posts.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(posts);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostsExists(posts.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                //Posts ps = _context.Posts.Single(x => x.Id == posts.Id);
+                //posts.Image = ps.Image;
+                //posts.LikeCount = ps.LikeCount;
+                //posts.UserID = ps.UserID;
+                //posts.Date = ps.Date;
+
+                _context.Update(posts);
+                await _context.SaveChangesAsync();
             }
-            return View(posts);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PostsExists(posts.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Post/Delete/5
@@ -158,14 +142,35 @@ namespace CafeDunyasi.Controllers
             return View(posts);
         }
 
+        private void DeleteFile(string path, string file)
+        {
+            string uploadDir = Path.Combine(_hostEnvironment.WebRootPath, path);
+            string fileURL = Path.Combine(uploadDir, file);
+
+            if (System.IO.File.Exists(fileURL))
+            {
+                System.IO.File.Delete(fileURL);
+            }
+        }
+
         // POST: Post/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var posts = await _context.Posts.FindAsync(id);
+
+            DeleteFile("images/BusinessImages/post", posts.Image);
+
+            var like = _context.PostLikes.Where(x => x.PostID == id).ToList();
+            foreach (var item in like)
+            {
+                _context.PostLikes.Remove(item);
+            }
+
             _context.Posts.Remove(posts);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
