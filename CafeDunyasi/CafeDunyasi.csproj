@@ -27,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\images\BusinessImages\menu\" />
     <Folder Include="wwwroot\images\BusinessImages\post\" />
     <Folder Include="wwwroot\images\BusinessImages\profile\" />
