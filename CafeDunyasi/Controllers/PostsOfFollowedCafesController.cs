@@ -25,8 +25,8 @@ namespace CafeDunyasi.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.profileImg = _context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(HttpContext.User)).AvatarImg;
-            ViewBag.BusinessName = _context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(HttpContext.User)).Name;
+            var businessInfo = _context.BusinessInfo.ToList();
+            ViewData["businessInfo"] = businessInfo;
 
             List<string> City = new List<string>();
             var ct = _context.City.ToList();
@@ -40,7 +40,24 @@ namespace CafeDunyasi.Controllers
             var likes = _context.PostLikes.Where(x => x.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
             ViewData["likes"] = likes;
 
-            return View(_context.Posts.OrderByDescending(x => x.Date).Take(30).ToList());
+            var busslist = _context.BusinessInfo.ToList();
+            var postlist = _context.Posts.ToList();
+            var following = _context.FollowingAccounts.ToList();
+
+            List<Posts> returnPosts = (from _posts in postlist
+                               join _business in busslist on _posts.UserID equals _business.UsersID
+                               join _following in following on _business.Id equals _following.BusinessID
+                               select new Posts
+                               {
+                                   Id = _posts.Id,
+                                   Date = _posts.Date,
+                                   Description = _posts.Description,
+                                   Image = _posts.Image,
+                                   LikeCount = _posts.LikeCount,
+                                   UserID = _posts.UserID
+                               }).Take(30).ToList();
+
+            return View(returnPosts);
         }
 
         public JsonResult Like(string postId)

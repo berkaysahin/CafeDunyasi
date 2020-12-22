@@ -35,8 +35,8 @@ namespace CafeDunyasi.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.profileImg = _context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(HttpContext.User)).AvatarImg;
-            ViewBag.BusinessName = _context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(HttpContext.User)).Name;
+            var businessInfo = _context.BusinessInfo.ToList();
+            ViewData["businessInfo"] = businessInfo;
 
             List<string> City = new List<string>();
             var ct = _context.City.ToList();
@@ -60,8 +60,8 @@ namespace CafeDunyasi.Controllers
 
             if (data == "all")
             {
-                ViewBag.profileImg = _context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(HttpContext.User)).AvatarImg;
-                ViewBag.BusinessName = _context.BusinessInfo.Single(x => x.UsersID == _userManager.GetUserId(HttpContext.User)).Name;
+                var businessInfo = _context.BusinessInfo.ToList();
+                ViewData["businessInfo"] = businessInfo;
 
                 List<string> City = new List<string>();
                 var ct = _context.City.ToList();
@@ -79,8 +79,8 @@ namespace CafeDunyasi.Controllers
             }
             else
             {
-                ViewBag.profileImg = _context.BusinessInfo.Single(x => x.UsersID == userId).AvatarImg;
-                ViewBag.BusinessName = _context.BusinessInfo.Single(x => x.UsersID == userId).Name;
+                var businessInfo = _context.BusinessInfo.ToList();
+                ViewData["businessInfo"] = businessInfo;
 
                 List<string> City = new List<string>();
                 City.Add(data);

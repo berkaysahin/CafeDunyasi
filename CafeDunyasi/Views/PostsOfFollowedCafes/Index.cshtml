@@ -6,6 +6,7 @@
 <div style="clear:both;"></div>
 @{
     var like = (List<PostLikes>)ViewData["Likes"];
+    var business = (List<BusinessInfo>)ViewData["businessInfo"];
     string strColor = "";
     bool tmp = false;
 }
@@ -17,8 +18,14 @@
         <div class="postSingle">
             <input type="hidden" id="postid" name="postid" value="@item.Id">
             <div class="up">
-                <img src="@("~/images/BusinessImages/profile/" + @ViewBag.profileImg)" style="height:40px; width:40px; border-radius:20px" asp-append-version="true" />
-                <a asp-controller="Profile" asp-action="Index" asp-route-data="@item.UserID">@ViewBag.BusinessName</a>
+                @foreach (var y in business)
+                {
+                    @if (y.UsersID == item.UserID)
+                    {
+                        <img src="@("~/images/BusinessImages/profile/" + @y.AvatarImg)" style="height:40px; width:40px; border-radius:20px" asp-append-version="true" />
+                        <a asp-controller="Profile" asp-action="Index" asp-route-data="@item.UserID">@y.Name</a>
+                    }
+                }
             </div>
             <img src="@("~/images/BusinessImages/post/" + item.Image)" class="img" asp-append-version="true" />
             <div class="bottom">

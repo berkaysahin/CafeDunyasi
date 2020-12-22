@@ -1,7 +1,8 @@
 ﻿@page
 @model ActivateBusinessAccountModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
-    ViewData["Title"] = "Business Account";
+    ViewData["Title"] = @localizer["BusinessAccount"];
     ViewData["ActivePage"] = ManageNavPages.ActivateBusinessAccount;
 }
 
@@ -12,12 +13,12 @@
         <form method="post" enctype="multipart/form-data">
             @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
             <div class="form-group">
-                <label asp-for="Input.BusinessName"></label>
+                @localizer["BusinessName"]
                 <input asp-for="Input.BusinessName" class="form-control" multiple />
                 <span asp-validation-for="Input.BusinessName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.City"></label>
+                @localizer["City"]
                 @*<input asp-for="Input.City" class="form-control" multiple />*@
                 <select asp-for="Input.City" class="form-control" asp-items="new SelectList(Model.City)">
                 </select>
@@ -25,56 +26,56 @@
             </div>
             @if (Model.BusinessAccount)
             {
-                <img src="@("~/images/BusinessImages/profile/" + Model.ProfileImageName)"  asp-append-version="true" />
+                <img src="@("~/images/BusinessImages/profile/" + Model.ProfileImageName)" asp-append-version="true" />
             }
-        <div class="form-group">
+            <div class="form-group">
+                @if (Model.BusinessAccount)
+                {
+                    @localizer["ProfileImageUpdate"]
+                    <input asp-for="Input.ProfileImageUpdate" class="form-control" multiple />
+                    <span asp-validation-for="Input.ProfileImageUpdate" class="text-danger"></span>
+                }
+                else
+                {
+                    @localizer["ProfileImage"]
+                    <input asp-for="Input.ProfileImage" class="form-control" multiple />
+                    <span asp-validation-for="Input.ProfileImage" class="text-danger"></span>
+                }
+            </div>
             @if (Model.BusinessAccount)
             {
-                <label asp-for="Input.ProfileImageUpdate"></label>
-                <input asp-for="Input.ProfileImageUpdate" class="form-control" multiple />
-                <span asp-validation-for="Input.ProfileImageUpdate" class="text-danger"></span>
+                <img src="@("~/images/BusinessImages/menu/" + Model.MenuImageName)" asp-append-version="true" />
             }
-            else
-            {
-                <label asp-for="Input.ProfileImage"></label>
-                <input asp-for="Input.ProfileImage" class="form-control" multiple />
-                <span asp-validation-for="Input.ProfileImage" class="text-danger"></span>
-            }
-        </div>
-            @if (Model.BusinessAccount)
-            {
-                <img src="@("~/images/BusinessImages/menu/" + Model.MenuImageName)"  asp-append-version="true" />
-            }
-        <div class="form-group">
-            @if (Model.BusinessAccount)
-            {
-                <label asp-for="Input.MenuImageUpdate"></label>
-                <input asp-for="Input.MenuImageUpdate" class="form-control" multiple />
-                <span asp-validation-for="Input.MenuImageUpdate" class="text-danger"></span>
-            }
-            else
-            {
-                <label asp-for="Input.MenuImage"></label>
-                <input asp-for="Input.MenuImage" class="form-control" multiple />
-                <span asp-validation-for="Input.MenuImage" class="text-danger"></span>
-            }
-        </div>
+            <div class="form-group">
+                @if (Model.BusinessAccount)
+                {
+                    @localizer["MenuImageUpdate"]
+                    <input asp-for="Input.MenuImageUpdate" class="form-control" multiple />
+                    <span asp-validation-for="Input.MenuImageUpdate" class="text-danger"></span>
+                }
+                else
+                {
+                    @localizer["MenuImage"]
+                    <input asp-for="Input.MenuImage" class="form-control" multiple />
+                    <span asp-validation-for="Input.MenuImage" class="text-danger"></span>
+                }
+            </div>
             @if (!Model.BusinessAccount)
             {
-                <button id="update-profile-button" name="button" value="Activate" class="btn btn-warning">Activate</button> @*type="submit"*@
+                <button id="update-profile-button" name="button" value="Activate" class="btn btn-warning">@localizer["Activate"]</button> @*type="submit"*@
             }
             else
             {
-                <button id="update-profile-button" name="button" value="Update" class="btn btn-warning">Update</button>
+                <button id="update-profile-button" name="button" value="Update" class="btn btn-warning">@localizer["Update"]</button>
             }
         </form>
-        <form onclick="return confirm('Are you sure you want to delete this?')">
+        <form onclick="return confirm('@localizer["ConfirmDelete"]')">
             @if (Model.BusinessAccount)
             {
-                <button id="update-profile-button" name="button" value="Remove" class="btn btn-danger" style="margin-top: 10px">Remove</button>
+                <button id="update-profile-button" name="button" value="Remove" class="btn btn-danger" style="margin-top: 10px">@localizer["Delete"]</button>
             }
         </form>
-        </div>
+    </div>
 </div>
 
 @section Scripts {

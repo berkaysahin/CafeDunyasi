@@ -1,8 +1,9 @@
 ﻿@page
 @model LoginModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = @localizer["LogIn"];
 }
 
 @{
@@ -26,7 +27,7 @@
                             <div class="col-md-12">
                                 <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
-                                    <label asp-for="Input.Email" class="control-label"></label>
+                                    @localizer["Email"] @*<label asp-for="Input.Email" class="control-label"></label>*@
                                     <div class="templatemo-input-icon-container">
                                         <i class="fa fa-user"></i>
                                         <input asp-for="Input.Email" class="form-control" />
@@ -39,7 +40,7 @@
                             <div class="col-md-12">
                                 <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
-                                    <label asp-for="Input.Password" class="control-label"></label>
+                                    @localizer["Password"]
                                     <div class="templatemo-input-icon-container">
                                         <input asp-for="Input.Password" class="form-control" />
                                         <i class="fa fa-lock"></i>
@@ -60,30 +61,30 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-warning">Log in</button>
+                                <button type="submit" class="btn btn-warning">@localizer["LogIn"]</button>
                             </div>
                         </div>
                         <p>
 
-                            <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                            <a id="forgot-password" asp-page="./ForgotPassword">@localizer["ForgotPassword"]</a>
 
                         <p>
                         <p>
-                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">@localizer["Register"]</a>
                         </p>
                     </div>
                     <div class="templatemo-other-signin col-md-6">
                         <label class="margin-bottom-15">
-                            Kafelerin sosyal medyasına hoş geldin!
+                            @localizer["Welcome"]
                         </label>
                         <a class="btn btn-block margin-bottom-15">
-                            <i class="fa fa-square" style="color:whitesmoke"></i> İşletmenin menüsünü kafeye gitmeden görebilme imkanı.
+                            <i class="fa fa-square" style="color:whitesmoke"></i> @localizer["SeeMenu"]
                         </a>
                         <a class="btn btn-block margin-bottom-15">
-                            <i class="fa fa-square" style="color:whitesmoke"></i> İşletmeler sizi memnun etmek için en güzel sunumlarını hazırlayacaklar.
+                            <i class="fa fa-square" style="color:whitesmoke"></i> @localizer["Presentations"]
                         </a>
                         <a class="btn btn-block">
-                            <i class="fa fa-square" style="color:whitesmoke"></i> Sevdiğiniz mekanları artık daha yakından takip edebileceksiniz.
+                            <i class="fa fa-square" style="color:whitesmoke"></i> @localizer["Favorites"]
                         </a>
                     </div>
                 </div>
