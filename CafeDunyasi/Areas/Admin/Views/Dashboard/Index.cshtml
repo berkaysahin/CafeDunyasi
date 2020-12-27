@@ -1,1 +1,83 @@
 ﻿@{ Layout = "_AdminLayout"; }
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Özet</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Admin Paneli</a></li>
+                    <li class="breadcrumb-item active">Özet</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>@ViewBag.sumLikes</h3>
+
+                <p>Toplam Like Sayısı</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-heart"></i>
+            </div>
+            <a href="#" class="small-box-footer">Bütün gönderileri gör <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>@ViewBag.sumPosts</h3>
+
+                <p>Toplam Post Sayısı</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-document"></i>
+            </div>
+            <a href="#" class="small-box-footer">Bütün gönderileri gör <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>@ViewBag.sumUsers</h3>
+
+                <p>Toplam Kullanıcı Sayısı</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person"></i>
+            </div>
+            <a href="#" class="small-box-footer">Kullanıcılar <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>@ViewBag.sumBusinessAccount</h3>
+
+                <p>Toplam İşletme Hesabı Sayısı</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">İşletme hesapları <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+</div>
+<!-- /.row -->
