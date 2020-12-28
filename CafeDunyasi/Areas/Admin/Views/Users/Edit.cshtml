@@ -1,0 +1,166 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+
+@model CafeDunyasi.Models.Users
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>BusinessInfo</h4>
+<hr />
+    <div class="row">
+
+        <div class="col-md-4">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="AccessFailedCount" />
+                <input type="hidden" asp-for="BusinessAccount" />
+                <input type="hidden" asp-for="ConcurrencyStamp" />
+                <input type="hidden" asp-for="EmailConfirmed" />
+                <input type="hidden" asp-for="LockoutEnabled" />
+                <input type="hidden" asp-for="LockoutEnd" />
+                <input type="hidden" asp-for="NormalizedEmail" />
+                <input type="hidden" asp-for="NormalizedUserName" />
+                <input type="hidden" asp-for="PasswordHash" />
+                <input type="hidden" asp-for="PhoneNumber" />
+                <input type="hidden" asp-for="PhoneNumberConfirmed" />
+                <input type="hidden" asp-for="SecurityStamp" />
+                <input type="hidden" asp-for="TwoFactorEnabled" />
+                <input type="hidden" asp-for="UserName" />
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surname" class="control-label"></label>
+                    <input asp-for="Surname" class="form-control" />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+
+<!--<center>
+    <div class="col-md-6">-->
+        <!-- jquery validation -->
+        <!--<div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Quick Example <small>jQuery Validation</small></h3>
+            </div>-->
+            <!-- /.card-header -->
+            <!-- form start -->
+            <!--<form id="quickForm" novalidate="novalidate">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="AccessFailedCount" />
+                <input type="hidden" asp-for="BusinessAccount" />
+                <input type="hidden" asp-for="ConcurrencyStamp" />
+                <input type="hidden" asp-for="EmailConfirmed" />
+                <input type="hidden" asp-for="LockoutEnabled" />
+                <input type="hidden" asp-for="LockoutEnd" />
+                <input type="hidden" asp-for="NormalizedEmail" />
+                <input type="hidden" asp-for="NormalizedUserName" />
+                <input type="hidden" asp-for="PasswordHash" />
+                <input type="hidden" asp-for="PhoneNumber" />
+                <input type="hidden" asp-for="PhoneNumberConfirmed" />
+                <input type="hidden" asp-for="SecurityStamp" />
+                <input type="hidden" asp-for="TwoFactorEnabled" />
+                <input type="hidden" asp-for="UserName" />
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="Email">Email address</label>
+                        <input asp-for="Email" type="email" name="email" class="form-control is-invalid" id="email" placeholder="Enter email" aria-describedby="email-error" aria-invalid="true">
+                        <span id="email-error" class="error invalid-feedback">Please enter a email address</span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name">Name</label>
+                        <input asp-for="Name" type="text" name="name" class="form-control is-invalid" id="name" placeholder="Name" aria-describedby="name-error">
+                        <span id="name-error" class="error invalid-feedback">Please enter a name</span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Surname">Surname</label>
+                        <input asp-for="Surname" type="text" name="surname" class="form-control is-invalid" id="surname" placeholder="Surname" aria-describedby="surname-error">
+                        <span id="surname-error" class="error invalid-feedback">Please enter a surname</span>
+                    </div>
+                </div>-->
+                <!-- /.card-body -->
+                <!--<div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>-->
+        <!-- /.card -->
+    <!--</div>
+</center>
+
+<script>
+$(function () {
+  $.validator.setDefaults({
+    submitHandler: function () {
+      //alert( "Form successful submitted!" );  method="post" asp-action="Edit"
+    }
+  });
+  $('#quickForm').validate({
+    rules: {
+      email: {
+        required: true,
+        email: true,
+      },
+      name: {
+        required: true,
+        minlength: 2
+      },
+      surname: {
+        required: true,
+          minlength: 2
+      },
+    },
+    messages: {
+      email: {
+        required: "Please enter a email address",
+        email: "Please enter a vaild email address"
+        },
+      name: {
+          required: "Please enter a name",
+          minlength: "Your name must be at least 2 characters long"
+      },
+      surname: {
+          required: "Please enter a surname",
+          minlength: "Your surname must be at least 2 characters long"
+      },
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
+  });
+});
+</script>-->

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CafeDunyasi.Models.Users>
+﻿@model IEnumerable<CafeDunyasi.Models.BusinessInfo>
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
@@ -8,7 +8,7 @@
     int index = 1;
 }
 
-<h1>Users</h1>
+<h1>Index</h1>
 
 <div class="card">
     <div class="card-header">
@@ -20,11 +20,10 @@
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
-                    <th>E-Mail</th>
                     <th>Name</th>
-                    <th>Surname</th>
-                    <th>Business Account</th>
-                    <th>Action</th>
+                    <th>City</th>
+                    <th>Profile Image</th>
+                    <th>Menu Image</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,29 +31,12 @@
                 {
                     <tr>
                         <td>@(index).</td>
-                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Name)
+                            @Html.DisplayFor(modelItem => item.City)
                         </td>
-                        <td>@Html.DisplayFor(modelItem => item.Surname)</td>
-                        <td>
-                            @{
-                                if (item.BusinessAccount == true)
-                                {
-                                    foreach (var x in business)
-                                    {
-                                        if (item.Id == x.UsersID)
-                                        {
-                                            <a asp-controller="BusinessAccounts" asp-action="Index" asp-route-data="@x.Id">@(x.Name)</a>
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(modelItem => item.BusinessAccount)
-                                }
-                            }
-                        </td>
+                        <td><img src="@("~/images/BusinessImages/profile/" + item.AvatarImg)" style="height:100px; width:auto" asp-append-version="true" /></td>
+                        <td><img src="@("~/images/BusinessImages/menu/" + item.MenuImg)" style="height:100px; width:auto" asp-append-version="true" /></td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>

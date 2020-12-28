@@ -45,8 +45,11 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         }
 
         // GET: Admin/Posts/Details/5
+        [Route("details")]
         public async Task<IActionResult> Details(int? id)
         {
+            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
+            ViewBag.whichPage = "Posts";
             if (id == null)
             {
                 return NotFound();
@@ -63,8 +66,11 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         }
 
         // GET: Admin/Posts/Create
+        [Route("create")]
         public IActionResult Create()
         {
+            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
+            ViewBag.whichPage = "Posts";
             return View();
         }
 
@@ -73,8 +79,11 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("create")]
         public async Task<IActionResult> Create([Bind("Id,UserID,Image,Description,Date,LikeCount")] Posts posts)
         {
+            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
+            ViewBag.whichPage = "Posts";
             if (ModelState.IsValid)
             {
                 _context.Add(posts);
@@ -85,8 +94,11 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         }
 
         // GET: Admin/Posts/Edit/5
+        [Route("edit")]
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
+            ViewBag.whichPage = "Posts";
             if (id == null)
             {
                 return NotFound();
@@ -105,15 +117,18 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("edit")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserID,Image,Description,Date,LikeCount")] Posts posts)
         {
+            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
+            ViewBag.whichPage = "Posts";
             if (id != posts.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     _context.Update(posts);
@@ -131,13 +146,16 @@ namespace CafeDunyasi.Areas.Admin.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             return View(posts);
         }
 
         // GET: Admin/Posts/Delete/5
+        [Route("delete")]
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
+            ViewBag.whichPage = "Posts";
             if (id == null)
             {
                 return NotFound();
@@ -156,8 +174,11 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         // POST: Admin/Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Route("delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
+            ViewBag.whichPage = "Posts";
             var posts = await _context.Posts.FindAsync(id);
             _context.Posts.Remove(posts);
             await _context.SaveChangesAsync();
