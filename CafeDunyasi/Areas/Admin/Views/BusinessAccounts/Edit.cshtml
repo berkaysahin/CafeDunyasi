@@ -3,16 +3,16 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = localizer["BusinessAccounts"] + " - " + localizer["Edit"];
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     List<string> cities = (List<string>)ViewData["Cities"];
     string profileImg = ViewBag.profileImg;
     string menuImg = ViewBag.menuImg;
 }
 
-<h1>Edit</h1>
+<h1>@localizer["Edit"]</h1>
 
-<h4>BusinessInfo</h4>
+<h4>@localizer["BusinessInfo"]</h4>
 <hr />
 @*<div class="row">
     <div class="col-md-4">
@@ -75,13 +75,13 @@
             </div>
             <img src="@("~/images/BusinessImages/profile/" + profileImg)" asp-append-version="true" />
             <div class="form-group">
-                @localizer["ProfileImageUpdate"]
+                @localizer["ProfileImage"]
                     <input asp-for="ProfileImageUpdate" class="form-control" multiple />
                     <span asp-validation-for="ProfileImageUpdate" class="text-danger"></span>
             </div>
             <img src="@("~/images/BusinessImages/menu/" + menuImg)" asp-append-version="true" />
             <div class="form-group">
-                @localizer["MenuImageUpdate"]
+                @localizer["MenuImage"]
                     <input asp-for="MenuImageUpdate" class="form-control" multiple />
                     <span asp-validation-for="MenuImageUpdate" class="text-danger"></span>
             </div>

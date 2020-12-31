@@ -2,13 +2,13 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = localizer["Users"];
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     List<CafeDunyasi.Models.BusinessInfo> business = (List<CafeDunyasi.Models.BusinessInfo>)ViewData["BusinessAccounts"];
     int index = 1;
 }
 
-<h1>Users</h1>
+<h1>@localizer["Users"]</h1>
 
 <div class="card">
     <div class="card-header">
@@ -20,11 +20,11 @@
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
-                    <th>E-Mail</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Business Account</th>
-                    <th>Action</th>
+                    <th>@localizer["EMail"]</th>
+                    <th>@localizer["Name"]</th>
+                    <th>@localizer["Surname"]</th>
+                    <th>@localizer["BusinessAccount"]</th>
+                    <th>@localizer["Actions"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,8 +56,8 @@
                             }
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">@localizer["Edit"]</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">@localizer["Delete"]</a>
                         </td>
                     </tr>
                     index = index + 1;

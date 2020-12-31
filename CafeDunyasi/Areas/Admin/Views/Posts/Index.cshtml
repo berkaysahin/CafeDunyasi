@@ -1,16 +1,18 @@
-﻿@model IEnumerable<CafeDunyasi.Models.Posts>
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model IEnumerable<CafeDunyasi.Models.Posts>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = localizer["Posts"];
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    List<CafeDunyasi.Models.BusinessInfo> business = (List<CafeDunyasi.Models.BusinessInfo>)ViewData["BusinessAccounts"];
     int index = 1;
 }
 
-<h1>Posts</h1>
+<h1>@localizer["Posts"]</h1>
 
 <div class="card">
     <div class="card-header">
-        
+
     </div>
     <!-- /.card-header -->
     <div class="card-body p-0">
@@ -18,11 +20,12 @@
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
-                    <th>Image</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th>LikeCount</th>
-                    <th>Action</th>
+                    <th>@localizer["Image"]</th>
+                    <th>@localizer["Description"]</th>
+                    <th>@localizer["Date"]</th>
+                    <th>@localizer["LikeCount"]</th>
+                    <th>@localizer["BusinessAccount"]</th>
+                    <th>@localizer["Actions"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +38,17 @@
                         <td>@Html.DisplayFor(modelItem => item.Date)</td>
                         <td>@Html.DisplayFor(modelItem => item.LikeCount)</td>
                         <td>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            @foreach (var x in business)
+                            {
+                                if (item.UserID == x.UsersID)
+                                {
+                                    <a asp-controller="BusinessAccounts" asp-action="Index" asp-route-data="@x.Id">@(x.Name)</a>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">@localizer["Details"]</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">@localizer["Delete"]</a>
                         </td>
                     </tr>
                     index = index + 1;

@@ -17,7 +17,6 @@ using System.Web;
 
 namespace CafeDunyasi.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly IHtmlLocalizer<HomeController> _localizer;
@@ -33,6 +32,7 @@ namespace CafeDunyasi.Controllers
             _userManager = userManager;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var businessInfo = _context.BusinessInfo.ToList();
@@ -54,6 +54,7 @@ namespace CafeDunyasi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Index(string data)
         {
             string userId = _userManager.GetUserId(HttpContext.User);
@@ -98,7 +99,7 @@ namespace CafeDunyasi.Controllers
                 return View(_context.Posts.Where(x => cityArray.Contains(x.UserID)).OrderByDescending(x => x.Date).Take(30).ToList());
             }
         }
-
+        [Authorize]
         public JsonResult Like(string postId)
         {
             string userId = _userManager.GetUserId(HttpContext.User);

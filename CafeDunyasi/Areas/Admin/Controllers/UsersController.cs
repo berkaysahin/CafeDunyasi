@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication;
 using System.Collections.Generic;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CafeDunyasi.Areas.Admin.Controllers
 {
@@ -24,44 +26,32 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         private readonly IHtmlLocalizer<UsersController> _localizer;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Users> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UsersController(IHtmlLocalizer<UsersController> localizer, ApplicationDbContext context, UserManager<Users> userManager)
+        public UsersController(IHtmlLocalizer<UsersController> localizer, ApplicationDbContext context, UserManager<Users> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _localizer = localizer;
             _context = context;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: UsersController
         [Route("")]
         [Route("index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string data = null)
         {
             ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
             ViewBag.whichPage = "Users";
 
-            ViewData["BusinessAccounts"] = _context.BusinessInfo.ToList();
-
-            return View(await _context.Users.ToListAsync());
-        }
-
-        // GET: UsersController/Details/5
-        [Route("details")]
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
+            if (data == null) 
             {
-                return NotFound();
+                ViewData["BusinessAccounts"] = _context.BusinessInfo.ToList();
+                return View(await _context.Users.ToListAsync());
             }
 
-            var users = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
-            {
-                return NotFound();
-            }
-
-            return View(users);
+            ViewData["BusinessAccounts"] = _context.BusinessInfo.Where(x => x.UsersID == data).ToList();
+            return View(await _context.Users.Where(x => x.Id == data).ToListAsync());
         }
 
         [BindProperty]
@@ -198,7 +188,19 @@ namespace CafeDunyasi.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BusinessAccounts"] = _context.BusinessInfo.Where(x => x.UsersID == id).ToList();
             return View(user);
+        }
+
+        private void DeleteFile(string path, string file)
+        {
+            string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+            string fileURL = Path.Combine(uploadDir, file);
+
+            if (System.IO.File.Exists(fileURL))
+            {
+                System.IO.File.Delete(fileURL);
+            }
         }
 
         // GET: UsersController/Delete/5
@@ -231,8 +233,51 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         {
             try
             {
-                var user = await _context.Users.FindAsync(id);
-                _context.Users.Remove(user);
+                Users _user = _context.Users.Single(res => res.Id == id);
+
+                var follow = _context.FollowingAccounts.Where(x => x.UserID == id).ToList();
+                foreach (var item in follow)
+                {
+                    _context.FollowingAccounts.Remove(item);
+                }
+
+                var post = _context.Posts.Where(x => x.UserID == id).ToList();
+                var like = _context.PostLikes.ToList();
+                foreach (var item in like)
+                {
+                    foreach (var item2 in post)
+                    {
+                        if (item2.Id == item.PostID)
+                        {
+                            _context.PostLikes.Remove(item);
+                        }
+                    }
+                }
+
+                foreach (var item in post)
+                {
+                    DeleteFile("images/BusinessImages/post", item.Image);
+                    _context.Posts.Remove(item);
+                }
+
+                BusinessInfo bs = _context.BusinessInfo.Single(x => x.UsersID == id);
+                foreach (var item in follow)
+                {
+                    if (item.BusinessID == bs.Id)
+                    {
+                        _context.FollowingAccounts.Remove(item);
+                    }
+                }
+
+
+                DeleteFile("images/BusinessImages/profile", bs.AvatarImg);
+                DeleteFile("images/BusinessImages/menu", bs.MenuImg);
+
+                _context.BusinessInfo.Remove(bs);
+
+                await _userManager.RemoveFromRoleAsync(_user, "BusinessAccount");
+                _context.Users.Remove(_user);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

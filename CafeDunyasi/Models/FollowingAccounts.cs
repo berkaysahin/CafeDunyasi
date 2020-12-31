@@ -10,7 +10,7 @@ namespace CafeDunyasi.Models
     {
         [Key]
         public int Id { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public int BusinessID { get; set; }
     }
 }

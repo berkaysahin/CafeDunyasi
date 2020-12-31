@@ -54,6 +54,25 @@ namespace CafeDunyasi.Controllers
                     var likes = _context.PostLikes.Where(x => x.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
                     ViewData["likes"] = likes;
 
+                    ViewData["userId"] = _userManager.GetUserId(HttpContext.User);
+                    ViewData["businessUserId"] = data;
+                    ViewData["businessId"] = userData.Id;
+
+                    string follow = "false";
+                    if (_userManager.GetUserId(HttpContext.User) != data)
+                    {
+                        List<FollowingAccounts> fa = _context.FollowingAccounts.Where(x => x.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
+
+                        foreach (var item in fa)
+                        {
+                            if (item.UserID == _userManager.GetUserId(HttpContext.User) && item.BusinessID == _context.BusinessInfo.Single(x => x.UsersID == userData.UsersID).Id)
+                            {
+                                follow = "true";
+                            }
+                        }
+                    }
+                    ViewBag.follow = follow;
+
                     return View(_context.Posts.Where(x => x.UserID == data).OrderByDescending(x => x.Date).Take(30).ToList());
                 }
                 catch

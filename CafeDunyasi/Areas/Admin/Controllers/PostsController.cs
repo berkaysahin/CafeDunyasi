@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Web;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CafeDunyasi.Areas.Admin.Controllers
 {
@@ -25,23 +27,35 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IHtmlLocalizer<PostsController> _localizer;
         private readonly UserManager<Users> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PostsController(ApplicationDbContext context, IHtmlLocalizer<PostsController> localizer, UserManager<Users> userManager)
+        public PostsController(ApplicationDbContext context, IHtmlLocalizer<PostsController> localizer, UserManager<Users> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _localizer = localizer;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Admin/Posts
         [Route("")]
         [Route("index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string data = null)
         {
             ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
             ViewBag.whichPage = "Posts";
 
-            return View(await _context.Posts.ToListAsync());
+            if (data == null)
+            {
+                ViewData["BusinessAccounts"] = _context.BusinessInfo.ToList();
+                return View(await _context.Posts.ToListAsync());
+            }
+
+            List<Posts> post = await _context.Posts.Where(x => x.UserID == data).ToListAsync();
+            if(post.Count > 0)
+                ViewData["BusinessAccounts"] = _context.BusinessInfo.Where(x => x.UsersID == post[0].UserID).ToList();
+
+            return View(post);
         }
 
         // GET: Admin/Posts/Details/5
@@ -65,89 +79,15 @@ namespace CafeDunyasi.Areas.Admin.Controllers
             return View(posts);
         }
 
-        // GET: Admin/Posts/Create
-        [Route("create")]
-        public IActionResult Create()
+        private void DeleteFile(string path, string file)
         {
-            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
-            ViewBag.whichPage = "Posts";
-            return View();
-        }
+            string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+            string fileURL = Path.Combine(uploadDir, file);
 
-        // POST: Admin/Posts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("create")]
-        public async Task<IActionResult> Create([Bind("Id,UserID,Image,Description,Date,LikeCount")] Posts posts)
-        {
-            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
-            ViewBag.whichPage = "Posts";
-            if (ModelState.IsValid)
+            if (System.IO.File.Exists(fileURL))
             {
-                _context.Add(posts);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                System.IO.File.Delete(fileURL);
             }
-            return View(posts);
-        }
-
-        // GET: Admin/Posts/Edit/5
-        [Route("edit")]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
-            ViewBag.whichPage = "Posts";
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var posts = await _context.Posts.FindAsync(id);
-            if (posts == null)
-            {
-                return NotFound();
-            }
-            return View(posts);
-        }
-
-        // POST: Admin/Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("edit")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserID,Image,Description,Date,LikeCount")] Posts posts)
-        {
-            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
-            ViewBag.whichPage = "Posts";
-            if (id != posts.Id)
-            {
-                return NotFound();
-            }
-
-            //if (ModelState.IsValid)
-            //{
-                try
-                {
-                    _context.Update(posts);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostsExists(posts.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            //}
-            return View(posts);
         }
 
         // GET: Admin/Posts/Delete/5
@@ -179,9 +119,23 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         {
             ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
             ViewBag.whichPage = "Posts";
-            var posts = await _context.Posts.FindAsync(id);
-            _context.Posts.Remove(posts);
+
+            var post = _context.Posts.Single(x => x.Id == id);
+            var like = _context.PostLikes.ToList();
+            foreach (var item in like)
+            {
+                if (item.PostID == id)
+                {
+                    _context.PostLikes.Remove(item);
+                }
+            }
+
+            DeleteFile("images/BusinessImages/post", post.Image);
+            _context.Posts.Remove(post);
+
+            
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -1,17 +1,12 @@
-﻿@{ Layout = "_AdminLayout"; }
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@{ Layout = "_AdminLayout"; }
 
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Özet</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Admin Paneli</a></li>
-                    <li class="breadcrumb-item active">Özet</li>
-                </ol>
+                <h1 class="m-0">@localizer["Dashboard"]</h1>
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -25,12 +20,12 @@
             <div class="inner">
                 <h3>@ViewBag.sumLikes</h3>
 
-                <p>Toplam Like Sayısı</p>
+                <p>@localizer["TotalNumberOfLikes"]</p>
             </div>
             <div class="icon">
                 <i class="ion ion-heart"></i>
             </div>
-            <a href="#" class="small-box-footer">Bütün gönderileri gör <i class="fas fa-arrow-circle-right"></i></a>
+            <a asp-controller="Posts" asp-action="index" class="small-box-footer">@localizer["SeeAllPosts"] <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -40,12 +35,12 @@
             <div class="inner">
                 <h3>@ViewBag.sumPosts</h3>
 
-                <p>Toplam Post Sayısı</p>
+                <p>@localizer["TotalNumberOfPosts"]</p>
             </div>
             <div class="icon">
                 <i class="ion ion-document"></i>
             </div>
-            <a href="#" class="small-box-footer">Bütün gönderileri gör <i class="fas fa-arrow-circle-right"></i></a>
+            <a asp-controller="Posts" asp-action="index" class="small-box-footer">@localizer["SeeAllPosts"] <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -55,12 +50,12 @@
             <div class="inner">
                 <h3>@ViewBag.sumUsers</h3>
 
-                <p>Toplam Kullanıcı Sayısı</p>
+                <p>@localizer["TotalNumberOfUsers"]</p>
             </div>
             <div class="icon">
                 <i class="ion ion-person"></i>
             </div>
-            <a href="#" class="small-box-footer">Kullanıcılar <i class="fas fa-arrow-circle-right"></i></a>
+            <a asp-controller="Users" asp-action="index" class="small-box-footer">@localizer["Users"] <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -70,12 +65,12 @@
             <div class="inner">
                 <h3>@ViewBag.sumBusinessAccount</h3>
 
-                <p>Toplam İşletme Hesabı Sayısı</p>
+                <p>@localizer["TotalNumberOfBusinessAccounts"]</p>
             </div>
             <div class="icon">
                 <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">İşletme hesapları <i class="fas fa-arrow-circle-right"></i></a>
+            <a asp-controller="BusinessAccounts" asp-action="index" class="small-box-footer">@localizer["BusinessAccounts"] <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->

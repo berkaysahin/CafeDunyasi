@@ -1,49 +1,44 @@
-﻿@model CafeDunyasi.Models.BusinessInfo
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model CafeDunyasi.Models.BusinessInfo
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = localizer["Details"];
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>@localizer["Details"]</h1>
 
 <div>
-    <h4>BusinessInfo</h4>
+    <h4>@localizer["BusinessInfo"]</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UsersID)
+        <dt class="col-sm-2">
+            @localizer["Name"]
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UsersID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
+        <dt class="col-sm-2">
+            @localizer["City"]
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.City)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvatarImg)
+        <dt class="col-sm-2">
+            @localizer["ProfileImage"]
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvatarImg)
+        <dd class="col-sm-10">
+            <img src="@("~/images/BusinessImages/profile/" + Model.AvatarImg)" asp-append-version="true" style="max-width:60%; height:auto;" />
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MenuImg)
+        <dt class="col-sm-2">
+            @localizer["MenuImage"]
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MenuImg)
+        <dd class="col-sm-10">
+            <img src="@("~/images/BusinessImages/menu/" + Model.MenuImg)" asp-append-version="true" style="max-width:60%; height:auto;" />
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">@localizer["Edit"]</a> |
+    <a asp-action="Index">@localizer["BackToList"]</a>
 </div>

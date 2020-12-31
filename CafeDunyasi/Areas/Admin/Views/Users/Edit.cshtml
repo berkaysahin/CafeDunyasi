@@ -3,16 +3,16 @@
 @model CafeDunyasi.Models.Users
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = localizer["Edit"];
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    List<CafeDunyasi.Models.BusinessInfo> business = (List<CafeDunyasi.Models.BusinessInfo>)ViewData["BusinessAccounts"];
 }
 
-<h1>Edit</h1>
+<h1>@localizer["Edit"]</h1>
 
-<h4>BusinessInfo</h4>
+<h4>@localizer["User"]</h4>
 <hr />
     <div class="row">
-
         <div class="col-md-4">
             <form asp-action="Edit" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -32,22 +32,41 @@
                 <input type="hidden" asp-for="TwoFactorEnabled" />
                 <input type="hidden" asp-for="UserName" />
                 <div class="form-group">
-                    <label asp-for="Email" class="control-label"></label>
+                    @localizer["Email"]
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
+                    @localizer["Name"]
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Surname" class="control-label"></label>
+                    @localizer["Surname"]
                     <input asp-for="Surname" class="form-control" />
                     <span asp-validation-for="Surname" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <strong>@localizer["BusinessAccount"]</strong><br />
+                    @{
+                        if (Model.BusinessAccount == true)
+                        {
+                            foreach (var x in business)
+                            {
+                                if (Model.Id == x.UsersID)
+                                {
+                                    <a asp-controller="BusinessAccounts" asp-action="Index" asp-route-data="@x.Id">@(x.Name)</a>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => Model.BusinessAccount)
+                        }
+                    }
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="@localizer["Save"]" class="btn btn-primary" />
                 </div>
             </form>
         </div>
@@ -55,7 +74,7 @@
     </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@localizer["BackToList"]</a>
 </div>
 
 

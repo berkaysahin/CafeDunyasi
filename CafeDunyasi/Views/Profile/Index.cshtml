@@ -9,33 +9,47 @@
 }
 else
 {
-    <center>
-        <div style="margin-bottom: 20px">
-            <img src="@("~/images/BusinessImages/profile/" + @ViewBag.profileImg)" style="height:150px; width:150px; border-radius:75px" asp-append-version="true" />
-            <h3 style="margin-top:20px">@ViewBag.BusinessName</h3>
-            <h5 style="margin-top:20px">@localizer["City"]: @ViewBag.City</h5>
-        </div>
-        <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">@localizer["ShowMenu"]</button>
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">@localizer["Menu"]</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <img src="@("~/images/BusinessImages/menu/" + @ViewBag.menuImage)" style="width:100%; height:auto;" asp-append-version="true" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">@localizer["Close"]</button>
-                    </div>
-                </div>
+<center>
+    <div style="margin-bottom: 20px">
+        <img src="@("~/images/BusinessImages/profile/" + @ViewBag.profileImg)" style="height:150px; width:150px; border-radius:75px" asp-append-version="true" />
+        <h3 style="margin-top:20px">@ViewBag.BusinessName</h3>
+        <h5 style="margin-top:20px">@localizer["City"]: @ViewBag.City</h5>
+    </div>
+    <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">@localizer["ShowMenu"]</button>
 
+    @if (ViewData["userId"] != ViewData["businessUserId"])
+    {
+        if (ViewBag.follow == "true")
+        {
+            <button onclick="follow('@ViewData["userId"]', '@ViewData["businessId"]', 'unfollow')" type="button" class="btn btn-danger btn-lg" data-toggle="modal" id="unfollow">@localizer["Unfollow"]</button>
+        }
+        else
+        {
+            <button onclick="follow('@ViewData["userId"]', '@ViewData["businessId"]', 'follow')" type="button" class="btn btn-success btn-lg" data-toggle="modal" id="follow">@localizer["Follow"]</button>
+        }
+    }
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@localizer["Menu"]</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <img src="@("~/images/BusinessImages/menu/" + @ViewBag.menuImage)" style="width:100%; height:auto;" asp-append-version="true" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">@localizer["Close"]</button>
+                </div>
             </div>
+
         </div>
-    </center>
+    </div>
+</center>
 
     <div style="margin-bottom: 20px"></div>
 
@@ -49,7 +63,7 @@ else
     {
         @foreach (var item in Model)
         {
-
+            
             if (i % 2 == 0)
             {
                 <div style="clear:left;"></div>
@@ -115,6 +129,24 @@ else
                     a.style.color = 'black';
                 }
                 document.getElementById(_likeCount).textContent = data;
+            },
+            error: function () {
+                alert("error");
+            },
+            type: 'GET'
+        });
+    }
+
+    function follow(_userId, _bussinesId, _button) {
+        $.ajax({
+            url: '@Url.Action("Follow","Home")',
+            data: {
+                postId: _id
+            },
+            dataType: 'json',
+            success: function (data) {
+                //document.getElementById(_button).to;
+                //$(#_button)
             },
             error: function () {
                 alert("error");

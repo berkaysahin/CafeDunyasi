@@ -2,17 +2,17 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = localizer["BusinessAccounts"];
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     List<CafeDunyasi.Models.BusinessInfo> business = (List<CafeDunyasi.Models.BusinessInfo>)ViewData["BusinessAccounts"];
+    List<CafeDunyasi.Models.Users> users = (List<CafeDunyasi.Models.Users>)ViewData["Users"];
     int index = 1;
 }
 
-<h1>Index</h1>
+<h1>@localizer["BusinessAccounts"]</h1>
 
 <div class="card">
     <div class="card-header">
-        <h3 style="float:right; font-size: 1.1rem; font-weight: 400; margin: 0;"><a asp-action="Create" class="btn btn-success">Create New</a></h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body p-0">
@@ -20,10 +20,12 @@
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
-                    <th>Name</th>
-                    <th>City</th>
-                    <th>Profile Image</th>
-                    <th>Menu Image</th>
+                    <th>@localizer["Name"]</th>
+                    <th>@localizer["City"]</th>
+                    <th>@localizer["ProfileImage"]</th>
+                    <th>@localizer["MenuImage"]</th>
+                    <th>@localizer["User"]</th>
+                    <th>@localizer["Actions"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,11 +37,23 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.City)
                         </td>
-                        <td><img src="@("~/images/BusinessImages/profile/" + item.AvatarImg)" style="height:100px; width:auto" asp-append-version="true" /></td>
-                        <td><img src="@("~/images/BusinessImages/menu/" + item.MenuImg)" style="height:100px; width:auto" asp-append-version="true" /></td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            <img src="@("~/images/BusinessImages/profile/" + item.AvatarImg)" style="height:100px; width:auto" asp-append-version="true" />
+                        </td>
+                        <td><img src="@("~/images/BusinessImages/menu/" + item.MenuImg)" data-toggle="modal" data-target="#myModal" style="height:100px; width:auto" asp-append-version="true" /></td>
+                        <td>
+                            @foreach (var x in users)
+                            {
+                                if (item.UsersID == x.Id)
+                                {
+                                    <a asp-controller="Users" asp-action="Index" asp-route-data="@x.Id">@(x.Name + " " + x.Surname)</a>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">@localizer["Details"]</a> |
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">@localizer["Edit"]</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">@localizer["Delete"]</a>
                         </td>
                     </tr>
                     index = index + 1;

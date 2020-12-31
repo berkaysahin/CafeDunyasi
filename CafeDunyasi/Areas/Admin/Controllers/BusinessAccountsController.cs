@@ -41,12 +41,23 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         // GET: Admin/BusinessAccounts
         [Route("")]
         [Route("index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string data = null)
         {
             ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
             ViewBag.whichPage = "BusinessAccounts";
 
-            return View(await _context.BusinessInfo.ToListAsync());
+
+            if (data == null) {
+                ViewData["Users"] = _context.Users.ToList();
+                return View(await _context.BusinessInfo.ToListAsync());
+            }
+
+
+            List<BusinessInfo> businessInfo = await _context.BusinessInfo.Where(x => x.Id == Convert.ToInt32(data)).ToListAsync();
+            if(businessInfo.Count > 0)
+                ViewData["Users"] = _context.Users.Where(x => x.Id == businessInfo[0].UsersID).ToList();
+
+            return View(businessInfo);
         }
 
         // GET: Admin/BusinessAccounts/Details/5
@@ -66,31 +77,6 @@ namespace CafeDunyasi.Areas.Admin.Controllers
             }
             ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
             ViewBag.whichPage = "BusinessAccounts";
-            return View(businessInfo);
-        }
-
-        // GET: Admin/BusinessAccounts/Create
-        [Route("create")]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Admin/BusinessAccounts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UsersID,Name,City,AvatarImg,MenuImg")] BusinessInfo businessInfo)
-        {
-            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
-            ViewBag.whichPage = "BusinessAccounts";
-            if (ModelState.IsValid)
-            {
-                _context.Add(businessInfo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
             return View(businessInfo);
         }
 
@@ -322,9 +308,68 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var businessInfo = await _context.BusinessInfo.FindAsync(id);
-            _context.BusinessInfo.Remove(businessInfo);
+            BusinessInfo bs = await _context.BusinessInfo.FindAsync(id);
+
+
+
+            Users _user = _context.Users.Single(res => res.Id == bs.UsersID);
+
+            _user.BusinessAccount = false;
+
+            var follow = _context.FollowingAccounts.Where(x => x.BusinessID == bs.Id).ToList();
+            foreach (var item in follow)
+            {
+                _context.FollowingAccounts.Remove(item);
+            }
+
+            var post = _context.Posts.Where(x => x.UserID == bs.UsersID).ToList();
+            var like = _context.PostLikes.ToList();
+            foreach (var item in like)
+            {
+                foreach (var item2 in post)
+                {
+                    if (item2.Id == item.PostID)
+                    {
+                        _context.PostLikes.Remove(item);
+                    }
+                }
+            }
+
+            foreach (var item in post)
+            {
+                DeleteFile("images/BusinessImages/post", item.Image);
+                _context.Posts.Remove(item);
+            }
+
+            _context.BusinessInfo.Remove(_context.BusinessInfo.Single(x => x.UsersID == bs.UsersID));
             await _context.SaveChangesAsync();
+
+
+
+            DeleteFile("images/BusinessImages/profile", bs.AvatarImg);
+            DeleteFile("images/BusinessImages/menu", bs.MenuImg);
+
+            var postList = _context.Posts.ToList();
+            foreach (var item in postList)
+            {
+                if (item.UserID == bs.UsersID)
+                {
+                    DeleteFile("images/BusinessImages/post", item.Image);
+
+                    _context.Posts.Remove(item);
+                }
+            }
+
+            await _userManager.RemoveFromRoleAsync(_user, "BusinessAccount");
+
+
+
+
+
+
+
+            //_context.BusinessInfo.Remove(bs);
+            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
