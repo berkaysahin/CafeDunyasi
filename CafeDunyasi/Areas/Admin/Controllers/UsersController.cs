@@ -77,7 +77,7 @@ namespace CafeDunyasi.Areas.Admin.Controllers
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -104,9 +104,11 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         [Route("create")]
         public async Task<IActionResult> Create(string returnUrl = null)
         {
+            ViewData["User"] = _context.Users.Single(x => x.Id == _userManager.GetUserId(HttpContext.User));
+            ViewBag.whichPage = "Users";
             if (ModelState.IsValid)
             {
-                var user = new Users
+                Users user = new Users
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
@@ -124,8 +126,8 @@ namespace CafeDunyasi.Areas.Admin.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            //return View();
-            return RedirectToAction(nameof(Index));
+            return View();
+            //return RedirectToAction(nameof(Index));
         }
 
         // GET: UsersController/Edit/5

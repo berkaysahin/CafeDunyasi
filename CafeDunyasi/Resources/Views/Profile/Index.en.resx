@@ -123,8 +123,14 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="Follow" xml:space="preserve">
+    <value>Follow</value>
   </data>
   <data name="Menu" xml:space="preserve">
     <value>Menu</value>
@@ -137,5 +143,11 @@
   </data>
   <data name="ShowMenu" xml:space="preserve">
     <value>Show Menu</value>
+  </data>
+  <data name="SomethingWentWrong" xml:space="preserve">
+    <value>Something went wrong</value>
+  </data>
+  <data name="Unfollow" xml:space="preserve">
+    <value>Unfollow</value>
   </data>
 </root>

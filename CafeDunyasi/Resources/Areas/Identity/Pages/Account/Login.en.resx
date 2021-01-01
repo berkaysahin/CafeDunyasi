@@ -126,8 +126,8 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>Forgot your password?</value>
   </data>
-  <data name="LogIn" xml:space="preserve">
-    <value>Log In</value>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>

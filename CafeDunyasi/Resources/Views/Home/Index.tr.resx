@@ -123,6 +123,9 @@
   <data name="City" xml:space="preserve">
     <value>Şehir</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Tarih</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Açıklama</value>
   </data>

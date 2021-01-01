@@ -6,12 +6,10 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1 style="color: white">@localizer["Create"]</h1>
-
 <div class="container">
     <div class="col-md-12">
         <section>
-            <form asp-controller="Users" asp-action="Create" method="post" class="form-horizontal templatemo-login-form-2">
+            <form method="post" class="form-horizontal templatemo-login-form-2">
                 <div class="row">
                     <div class="col-md-12">
                         <h1>@ViewData["Title"]</h1>
@@ -21,12 +19,10 @@
                     <div class="templatemo-one-signin col-md-6">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
                                     @localizer["Name"] @*<label asp-for="Input.Name" class="control-label"></label>*@
                                     <div class="templatemo-input-icon-container">
-                                        <i class="fa fa-user"></i>
-                                        <input asp-for="Input.Name" class="form-control" />
+                                        <input asp-for="Input.Name" class="form-control" required />
                                     </div>
                                     <span asp-validation-for="Input.Name" class="text-danger"></span>
                                 </div>
@@ -34,12 +30,11 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div asp-validation-summary="All" class="text-danger"></div>
+
                                 <div class="form-group">
                                     @localizer["Surname"]
                                     <div class="templatemo-input-icon-container">
-                                        <input asp-for="Input.Surname" class="form-control" />
-                                        <i class="fa fa-lock"></i>
+                                        <input asp-for="Input.Surname" class="form-control" required />
                                         <span asp-validation-for="Input.Surname" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -47,12 +42,11 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div asp-validation-summary="All" class="text-danger"></div>
+
                                 <div class="form-group">
                                     @localizer["Email"]
                                     <div class="templatemo-input-icon-container">
-                                        <input asp-for="Input.Email" class="form-control" />
-                                        <i class="fa fa-lock"></i>
+                                        <input asp-for="Input.Email" class="form-control" required />
                                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -60,12 +54,10 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
                                     @localizer["Password"]
                                     <div class="templatemo-input-icon-container">
-                                        <input asp-for="Input.Password" class="form-control" />
-                                        <i class="fa fa-lock"></i>
+                                        <input asp-for="Input.Password" class="form-control" required />
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -73,12 +65,10 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
                                     @localizer["ConfirmPassword"]
                                     <div class="templatemo-input-icon-container">
-                                        <input asp-for="Input.ConfirmPassword" class="form-control" />
-                                        <i class="fa fa-lock"></i>
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" required />
                                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                     </div>
                                 </div>

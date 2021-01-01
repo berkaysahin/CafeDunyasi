@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CafeDunyasi.Data;
 using CafeDunyasi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,14 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Users> _userManager;
         private readonly SignInManager<Users> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public IndexModel(
             UserManager<Users> userManager,
-            SignInManager<Users> signInManager)
+            SignInManager<Users> signInManager,
+            ApplicationDbContext context)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -47,6 +51,16 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             Username = userName;
 
             UserID = _userManager.GetUserId(User);
+
+            
+            if (user.BusinessAccount == true)
+            {
+                ViewData["BusinessAccount"] = "true";
+            }
+            else
+            {
+                ViewData["BusinessAccount"] = "false";
+            }
 
             Input = new InputModel
             {

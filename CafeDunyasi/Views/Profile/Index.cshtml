@@ -1,11 +1,15 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @model IEnumerable<CafeDunyasi.Models.Posts>
 
-@{ ViewData["Title"] = @localizer["Profile"]; }
+@{ 
+    ViewData["Title"] = @localizer["Profile"];
+    string follow = ViewBag.follow;
+
+}
 
 @if (ViewBag.error == "1")
 {
-    <font style="font-size:28px">@localizer["Something went wrong"].</font>
+    <font style="font-size:28px">@localizer["SomethingWentWrong"].</font>
 }
 else
 {
@@ -17,16 +21,13 @@ else
     </div>
     <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">@localizer["ShowMenu"]</button>
 
-    @if (ViewData["userId"] != ViewData["businessUserId"])
+    @if (ViewBag.userId != ViewBag.businessUserId)
     {
-        if (ViewBag.follow == "true")
-        {
-            <button onclick="follow('@ViewData["userId"]', '@ViewData["businessId"]', 'unfollow')" type="button" class="btn btn-danger btn-lg" data-toggle="modal" id="unfollow">@localizer["Unfollow"]</button>
-        }
-        else
-        {
-            <button onclick="follow('@ViewData["userId"]', '@ViewData["businessId"]', 'follow')" type="button" class="btn btn-success btn-lg" data-toggle="modal" id="follow">@localizer["Follow"]</button>
-        }
+       
+            <button onclick="unfollow('@ViewBag.userId', '@ViewBag.businessId')" type="button" class="btn btn-danger btn-lg" data-toggle="modal" id="unfollow">@localizer["Unfollow"]</button>
+       
+            <button onclick="follow('@ViewBag.userId', '@ViewBag.businessId')" type="button" class="btn btn-success btn-lg" data-toggle="modal" id="follow">@localizer["Follow"]</button>
+        
     }
 
 
@@ -80,8 +81,9 @@ else
                 <div class="bottom">
                     @if (item.Description != "" && item.Description != null)
                     {
-                    <div>@localizer["Description"]: @item.Description</div>
+                        <div>@localizer["Description"]: @item.Description</div>
                     }
+                    <div>@localizer["Date"]: @item.Date</div>
                     @foreach (var x in like)
                     {
                         @if (tmp == false)
@@ -111,7 +113,7 @@ else
 <font style="font-size:28px">@localizer["NoPostsYet"].</font>
     }
 }
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
 <script type="text/javascript">
     function likeAt(_id, _likeCount) {
         //console.log(_id); alert(_id); debugger;
@@ -137,16 +139,46 @@ else
         });
     }
 
-    function follow(_userId, _bussinesId, _button) {
+    $(window).load(function () {
+        if (@follow === true) {
+            $("#follow").hide();
+            $("#unfollow").show();
+        } else {
+            $("#follow").show();
+            $("#unfollow").hide();
+        }
+    });
+
+    function follow(_userId, _bussinesId) {
         $.ajax({
-            url: '@Url.Action("Follow","Home")',
+            url: '@Url.Action("Follow","Profile")',
             data: {
-                postId: _id
+                userId: _userId,
+                bussinesId: _bussinesId
             },
             dataType: 'json',
             success: function (data) {
-                //document.getElementById(_button).to;
-                //$(#_button)
+               $("#follow").hide();
+               $("#unfollow").show();
+            },
+            error: function () {
+                alert("error");
+            },
+            type: 'GET'
+        });
+    }
+
+    function unfollow(_userId, _bussinesId) {
+        $.ajax({
+            url: '@Url.Action("Unfollow", "Profile")',
+            data: {
+                userId: _userId,
+                bussinesId: _bussinesId
+            },
+            dataType: 'json',
+            success: function (data) {
+                $("#follow").show();
+                $("#unfollow").hide();
             },
             error: function () {
                 alert("error");

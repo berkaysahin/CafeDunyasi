@@ -120,6 +120,9 @@
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Şifre Tekrarı</value>
   </data>
+  <data name="Create" xml:space="preserve">
+    <value>Oluştur</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>E-Mail</value>
   </data>

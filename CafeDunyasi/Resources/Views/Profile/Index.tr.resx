@@ -123,8 +123,14 @@
   <data name="Close" xml:space="preserve">
     <value>Kapat</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Tarih</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Açıklama</value>
+  </data>
+  <data name="Follow" xml:space="preserve">
+    <value>Takip Et</value>
   </data>
   <data name="Menu" xml:space="preserve">
     <value>Menü</value>
@@ -137,5 +143,11 @@
   </data>
   <data name="ShowMenu" xml:space="preserve">
     <value>Menüyü Göster</value>
+  </data>
+  <data name="SomethingWentWrong" xml:space="preserve">
+    <value>Bir şeyler yanlış gitti</value>
+  </data>
+  <data name="Unfollow" xml:space="preserve">
+    <value>Takibi Bırak</value>
   </data>
 </root>

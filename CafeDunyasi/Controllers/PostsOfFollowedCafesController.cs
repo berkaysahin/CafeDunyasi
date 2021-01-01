@@ -47,6 +47,7 @@ namespace CafeDunyasi.Controllers
             List<Posts> returnPosts = (from _posts in postlist
                                join _business in busslist on _posts.UserID equals _business.UsersID
                                join _following in following on _business.Id equals _following.BusinessID
+                               where _following.UserID.Equals(_userManager.GetUserId(HttpContext.User))
                                select new Posts
                                {
                                    Id = _posts.Id,
@@ -55,7 +56,7 @@ namespace CafeDunyasi.Controllers
                                    Image = _posts.Image,
                                    LikeCount = _posts.LikeCount,
                                    UserID = _posts.UserID
-                               }).Take(30).ToList();
+                               }).OrderByDescending(x => x.Date).Take(30).ToList();
 
             return View(returnPosts);
         }

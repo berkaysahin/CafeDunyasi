@@ -69,7 +69,7 @@
                 <button id="update-profile-button" name="button" value="Update" class="btn btn-warning">@localizer["Update"]</button>
             }
         </form>
-        <form onclick="return confirm('@localizer["ConfirmDelete"]')">
+        <form onclick="return confirm('@localizer["ConfirmDelete"]')" method="post">
             @if (Model.BusinessAccount)
             {
                 <button id="update-profile-button" name="button" value="Remove" class="btn btn-danger" style="margin-top: 10px">@localizer["Delete"]</button>

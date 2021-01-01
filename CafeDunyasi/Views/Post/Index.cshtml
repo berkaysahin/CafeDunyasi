@@ -1,48 +1,104 @@
-﻿@model IEnumerable<CafeDunyasi.Models.Posts>
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model IEnumerable<CafeDunyasi.Models.Posts>
 
 @{
-    ViewData["Title"] = "Post Ayarları";
+    ViewData["Title"] = @localizer["PostSettings"];
 }
 
-<h1>Post Settings</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success">New Post</a>
+    <a asp-action="Create" class="btn btn-success">@localizer["NewPost"]</a>
 </p>
 
-@{ 
+@{
     int i = 0;
+    string strColor = "";
+    bool tmp = false;
+    var like = (List<PostLikes>)ViewData["Likes"];
 }
 
-@foreach (var item in Model)
+@if (Model.Any())
 {
-
-    if (i % 2 == 0)
+    @foreach (var item in Model)
     {
-        <div style="clear:left;"></div>
+
+        if (i % 2 == 0)
+        {
+            <div style="clear:left;"></div>
+        }
+        i++;
+
+
+        <div class="post">
+            <div class="up">
+            </div>
+            <img src="@("~/images/BusinessImages/post/" + item.Image)" class="img" asp-append-version="true" />
+            <div class="bottom">
+                @if (item.Description != "" && item.Description != null)
+                {
+                    <div>Description: @item.Description</div>
+                }
+                <div>@localizer["Date"]: @item.Date</div>
+                @foreach (var x in like)
+                {
+                    @if (tmp == false)
+                    {
+                        @if (x.PostID == item.Id)
+                        {
+                            strColor = "blue";
+                            tmp = true;
+                        }
+                        else
+                        {
+                            strColor = "black";
+                        }
+                    }
+                }
+                <button onclick="likeAt('@(item.Id)', '@(item.Id+item.UserID)')" name="data" style="all: unset; cursor: pointer; float:left; margin-right:5px"><i class="fa fa-heart" style="font-size:24px; color: @(strColor)" id="@item.Id"></i></button>
+                @{
+                    tmp = false;
+                }
+                <div id="@(item.Id+item.UserID)">@item.LikeCount</div>
+                <br />
+
+                <div style="margin-top:10px"></div>
+
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-light" style="margin-right:10px">@localizer["Edit"]</a>|
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" style="margin-left:10px;">@localizer["Delete"]</a>
+
+                <div style="clear:both;"></div>
+            </div>
+        </div>
     }
-    i++;
-
-
-    <div class="post">
-        <div class="up">
-        </div>
-        <img src="@("~/images/BusinessImages/post/" + item.Image)" class="img" asp-append-version="true" />
-        <div class="bottom">
-            @if (item.Description != "" && item.Description != null)
-            {
-            <div>Description: @item.Description</div>
-            }
-            
-            <i class="fa fa-heart" style="font-size:24px"></i> @item.LikeCount
-            <br />
-
-            <div style="margin-top:10px"></div>
-
-            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-light" style="margin-right:10px">Edit</a>|
-            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" style="margin-left:10px;">Delete</a>
-
-            <div style="clear:both;"></div>
-        </div>
-    </div>
 }
+else
+{
+    <font style="font-size:28px">@localizer["NoPostsYet"].</font>
+}
+
+<script type="text/javascript">
+    function likeAt(_id, _likeCount) {
+        //console.log(_id); alert(_id); debugger;
+        $.ajax({
+            url: '@Url.Action("Like", "Post")',
+            data: {
+                postId: _id
+            },
+            dataType: 'json',
+            success: function (data) {
+                var a = document.getElementById(_id);
+                if (a.style.color == 'black') {
+                    a.style.color = 'blue';
+                } else {
+                    a.style.color = 'black';
+                }
+                document.getElementById(_likeCount).textContent = data;
+            },
+            error: function () {
+                alert("error");
+            },
+            type: 'GET'
+        });
+    }
+</script>

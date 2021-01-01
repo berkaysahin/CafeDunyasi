@@ -48,8 +48,9 @@
             <div class="bottom">
                 @if (item.Description != "" && item.Description != null)
                 {
-                <div>@localizer["Description"]: @item.Description</div>
+                    <div>@localizer["Description"]: @item.Description</div>
                 }
+                <div>@localizer["Date"]: @item.Date</div>
                 @foreach (var x in like)
                 {
                     @if (tmp == false)

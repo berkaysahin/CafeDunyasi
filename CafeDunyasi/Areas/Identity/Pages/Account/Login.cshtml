@@ -30,7 +30,7 @@
             <form class="form-horizontal templatemo-login-form-2" role="form" id="account" method="post">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1>@ViewData["Title"]</h1>
+                        <h1>@localizer["Login"]</h1>
                     </div>
                 </div>
                 <div class="row">
@@ -76,11 +76,6 @@
                                 <button type="submit" class="btn btn-warning">@localizer["Login"]</button>
                             </div>
                         </div>
-                        <p>
-
-                            <a id="forgot-password" asp-page="./ForgotPassword">@localizer["ForgotPassword"]</a>
-
-                        <p>
                         <p>
                             <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">@localizer["Register"]</a>
                         </p>

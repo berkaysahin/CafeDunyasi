@@ -94,6 +94,9 @@ namespace CafeDunyasi.Controllers
 
                 ViewBag.Cities = City;
 
+                var likes = _context.PostLikes.Where(x => x.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
+                ViewData["likes"] = likes;
+
                 var cityArray = _context.BusinessInfo.Where(x => x.City == data).Select(x => x.UsersID);
 
                 return View(_context.Posts.Where(x => cityArray.Contains(x.UserID)).OrderByDescending(x => x.Date).Take(30).ToList());

@@ -63,7 +63,7 @@
             @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
             <div class="form-group">
                 @localizer["BusinessName"]
-                <input asp-for="BusinessName" class="form-control" multiple />
+                <input asp-for="BusinessName" class="form-control" required multiple />
                 <span asp-validation-for="BusinessName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -76,13 +76,13 @@
             <img src="@("~/images/BusinessImages/profile/" + profileImg)" asp-append-version="true" />
             <div class="form-group">
                 @localizer["ProfileImage"]
-                    <input asp-for="ProfileImageUpdate" class="form-control" multiple />
+                    <input asp-for="ProfileImageUpdate" class="form-control" required multiple />
                     <span asp-validation-for="ProfileImageUpdate" class="text-danger"></span>
             </div>
             <img src="@("~/images/BusinessImages/menu/" + menuImg)" asp-append-version="true" />
             <div class="form-group">
                 @localizer["MenuImage"]
-                    <input asp-for="MenuImageUpdate" class="form-control" multiple />
+                    <input asp-for="MenuImageUpdate" class="form-control" required multiple />
                     <span asp-validation-for="MenuImageUpdate" class="text-danger"></span>
             </div>
             

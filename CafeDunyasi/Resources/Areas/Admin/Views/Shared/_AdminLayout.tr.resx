@@ -132,6 +132,9 @@
   <data name="Posts" xml:space="preserve">
     <value>Gönderiler</value>
   </data>
+  <data name="ReturnSite" xml:space="preserve">
+    <value>Siteye Dön</value>
+  </data>
   <data name="Users" xml:space="preserve">
     <value>Kullanıcılar</value>
   </data>

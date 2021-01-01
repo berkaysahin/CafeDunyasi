@@ -123,6 +123,9 @@
   <data name="City" xml:space="preserve">
     <value>City</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>

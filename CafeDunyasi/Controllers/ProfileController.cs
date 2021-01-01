@@ -54,9 +54,9 @@ namespace CafeDunyasi.Controllers
                     var likes = _context.PostLikes.Where(x => x.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
                     ViewData["likes"] = likes;
 
-                    ViewData["userId"] = _userManager.GetUserId(HttpContext.User);
-                    ViewData["businessUserId"] = data;
-                    ViewData["businessId"] = userData.Id;
+                    ViewBag.userId = _userManager.GetUserId(HttpContext.User);
+                    ViewBag.businessUserId = data;
+                    ViewBag.businessId = userData.Id;
 
                     string follow = "false";
                     if (_userManager.GetUserId(HttpContext.User) != data)
@@ -65,7 +65,7 @@ namespace CafeDunyasi.Controllers
 
                         foreach (var item in fa)
                         {
-                            if (item.UserID == _userManager.GetUserId(HttpContext.User) && item.BusinessID == _context.BusinessInfo.Single(x => x.UsersID == userData.UsersID).Id)
+                            if (item.BusinessID == _context.BusinessInfo.Single(x => x.UsersID == data).Id)
                             {
                                 follow = "true";
                             }
@@ -115,6 +115,28 @@ namespace CafeDunyasi.Controllers
             int likeCt = postslike.LikeCount;
 
             return Json(likeCt);
+        }
+
+        public JsonResult Follow(string userId, string bussinesId)
+        {
+            FollowingAccounts fa = new FollowingAccounts();
+            fa.BusinessID = Convert.ToInt32(bussinesId);
+            fa.UserID = userId;
+
+            _context.FollowingAccounts.Add(fa);
+            _context.SaveChanges();
+
+            return Json("success");
+        }
+
+        public JsonResult Unfollow(string userId, string bussinesId)
+        {
+            FollowingAccounts fa = _context.FollowingAccounts.Single(x => x.UserID == userId);
+
+            _context.FollowingAccounts.Remove(fa);
+            _context.SaveChanges();
+
+            return Json("success");
         }
     }
 }

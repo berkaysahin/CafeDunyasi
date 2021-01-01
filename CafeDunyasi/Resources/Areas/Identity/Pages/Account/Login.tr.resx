@@ -126,7 +126,7 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>Şifreni mi unuttun?</value>
   </data>
-  <data name="LogIn" xml:space="preserve">
+  <data name="Login" xml:space="preserve">
     <value>Giriş Yap</value>
   </data>
   <data name="Password" xml:space="preserve">
