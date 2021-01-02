@@ -127,9 +127,9 @@
     <value>İndir</value>
   </data>
   <data name="GivenDatas" xml:space="preserve">
-    <value>Bu sayfa bize verdiğiniz kişisel verilerilerinizi indirmenize veya silmenize olanak tanır.</value>
+    <value>Bu sayfa bize verdiğiniz kişisel verilerilerinizi indirmenize olanak tanır.</value>
   </data>
-  <data name="PersonelData" xml:space="preserve">
+  <data name="PersonalData" xml:space="preserve">
     <value>Kişisel Veriler</value>
   </data>
 </root>

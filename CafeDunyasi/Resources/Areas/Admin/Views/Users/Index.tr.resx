@@ -123,6 +123,9 @@
   <data name="BusinessAccount" xml:space="preserve">
     <value>İşletme Hesabı</value>
   </data>
+  <data name="CreateNew" xml:space="preserve">
+    <value>Yeni Oluştur</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Sil</value>
   </data>

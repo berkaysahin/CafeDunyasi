@@ -39,6 +39,8 @@ namespace CafeDunyasi.Controllers
             ViewData["businessInfo"] = businessInfo;
 
             List<string> City = new List<string>();
+            
+            City.Add("");
             var ct = _context.City.ToList();
             foreach (var item in ct)
             {
@@ -65,6 +67,7 @@ namespace CafeDunyasi.Controllers
                 ViewData["businessInfo"] = businessInfo;
 
                 List<string> City = new List<string>();
+                City.Add("");
                 var ct = _context.City.ToList();
                 foreach (var item in ct)
                 {

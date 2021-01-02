@@ -126,7 +126,7 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>Forgot your password?</value>
   </data>
-  <data name="LogIn" xml:space="preserve">
+  <data name="Login" xml:space="preserve">
     <value>Log In</value>
   </data>
   <data name="Password" xml:space="preserve">
@@ -137,6 +137,9 @@
   </data>
   <data name="Register" xml:space="preserve">
     <value>Register as a new user.</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me</value>
   </data>
   <data name="SeeMenu" xml:space="preserve">
     <value>Possibility to see the menu of the business without going to the cafe.</value>

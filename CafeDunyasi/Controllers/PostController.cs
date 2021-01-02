@@ -33,7 +33,7 @@ namespace CafeDunyasi.Controllers
         {
             var likes = _context.PostLikes.Where(x => x.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
             ViewData["likes"] = likes;
-            return View(await _context.Posts.OrderByDescending(x => x.Date).ToListAsync());
+            return View(await _context.Posts.Where(y => y.UserID == _userManager.GetUserId(HttpContext.User)).OrderByDescending(x => x.Date).ToListAsync());
         }
 
         // GET: Post/Create

@@ -241,7 +241,6 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
                 try
                 {
                     if (Input.ProfileImageUpdate != null)
-                        if (Input.ProfileImageUpdate.FileName != bs.AvatarImg)
                     {
                         DeleteFile("images/BusinessImages/profile", bs.AvatarImg);
                         profileImage = UploadFile(Input.ProfileImageUpdate, "images/BusinessImages/profile");
@@ -256,7 +255,6 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
                 try
                 {
                     if(Input.MenuImageUpdate != null)
-                    if (Input.MenuImageUpdate.FileName != bs.MenuImg)
                     {
                         DeleteFile("images/BusinessImages/menu", bs.MenuImg);
                         menuImage = UploadFile(Input.MenuImage, "images/BusinessImages/menu");

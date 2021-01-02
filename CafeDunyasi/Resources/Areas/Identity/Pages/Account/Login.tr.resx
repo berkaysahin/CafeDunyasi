@@ -138,6 +138,9 @@
   <data name="Register" xml:space="preserve">
     <value>Yeni kullanıcı oluştur.</value>
   </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Beni hatırla</value>
+  </data>
   <data name="SeeMenu" xml:space="preserve">
     <value>İşletmenin menüsünü kafeye gitmeden görebilme imkanı.</value>
   </data>

@@ -174,6 +174,7 @@ namespace CafeDunyasi.Areas.Admin.Controllers
             {
                 try
                 {
+                    await _userManager.SetUserNameAsync(user, user.Email);
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
@@ -233,6 +234,10 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         [Route("delete")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            if (_userManager.GetUserId(HttpContext.User) == id)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             try
             {
                 Users _user = _context.Users.Single(res => res.Id == id);
@@ -262,20 +267,26 @@ namespace CafeDunyasi.Areas.Admin.Controllers
                     _context.Posts.Remove(item);
                 }
 
-                BusinessInfo bs = _context.BusinessInfo.Single(x => x.UsersID == id);
+                var bs = _context.BusinessInfo.Where(x => x.UsersID == id).ToList();
+                
                 foreach (var item in follow)
                 {
-                    if (item.BusinessID == bs.Id)
-                    {
-                        _context.FollowingAccounts.Remove(item);
+                    if(bs.Count > 0)
+                    { 
+                        if (item.BusinessID == bs[0].Id)
+                        {
+                            _context.FollowingAccounts.Remove(item);
+                        }
                     }
                 }
 
+                if (bs.Count > 0)
+                {
+                    DeleteFile("images/BusinessImages/profile", bs[0].AvatarImg);
+                    DeleteFile("images/BusinessImages/menu", bs[0].MenuImg);
 
-                DeleteFile("images/BusinessImages/profile", bs.AvatarImg);
-                DeleteFile("images/BusinessImages/menu", bs.MenuImg);
-
-                _context.BusinessInfo.Remove(bs);
+                    _context.BusinessInfo.Remove(bs[0]);
+                }
 
                 await _userManager.RemoveFromRoleAsync(_user, "BusinessAccount");
                 _context.Users.Remove(_user);

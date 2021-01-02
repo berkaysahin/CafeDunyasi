@@ -126,6 +126,9 @@
   <data name="MailSettings" xml:space="preserve">
     <value>E-Mail Ayarı</value>
   </data>
+  <data name="NewEmail" xml:space="preserve">
+    <value>Yeni E-Mail</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>
   </data>

@@ -2,19 +2,12 @@
 @model LoginModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
-@*@inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> locOptions
-
-@{ var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
-    var cultureList = locOptions.Value.SupportedUICultures.Select(x => new SelectListItem { Value = x.Name, Text = localizer.GetString(x.Name) }).ToList();
-    var returnUrl = string.IsNullOrWhiteSpace(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value }{Context.Request.QueryString}"; }*@
-
 @{
     ViewData["Title"] = localizer["Login"];
 }
 
 @{
     Layout = "~/Views/Shared/_LoginSignupLayout.cshtml";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1 style="color: white">Cafe Dünyası</h1>
@@ -66,7 +59,7 @@
                                 <div class="checkbox">
                                     <label asp-for="Input.RememberMe">
                                         <input asp-for="Input.RememberMe" />
-                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                        @localizer["RememberMe"]
                                     </label>
                                 </div>
                             </div>

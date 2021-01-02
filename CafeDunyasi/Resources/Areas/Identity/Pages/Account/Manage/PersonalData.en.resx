@@ -127,9 +127,9 @@
     <value>Download</value>
   </data>
   <data name="GivenDatas" xml:space="preserve">
-    <value>Your account contains personal data that you have given us. This page allows you to download or delete that data.</value>
+    <value>Your account contains personal data that you have given us. This page allows you to download that data.</value>
   </data>
-  <data name="PersonelData" xml:space="preserve">
-    <value>Personel Data</value>
+  <data name="PersonalData" xml:space="preserve">
+    <value>Personal Data</value>
   </data>
 </root>

@@ -129,6 +129,9 @@
   <data name="Dashboard" xml:space="preserve">
     <value>Özet</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Çıkış</value>
+  </data>
   <data name="Posts" xml:space="preserve">
     <value>Gönderiler</value>
   </data>

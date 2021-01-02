@@ -30,7 +30,7 @@
                             <div class="col-md-12">
                                 <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
-                                    @localizer["Name"] @*<label asp-for="Input.Name" class="control-label"></label>*@
+                                    @localizer["Name"]
                                     <div class="templatemo-input-icon-container">
                                         <i class="fa fa-user"></i>
                                         <input asp-for="Input.Name" class="form-control" />
@@ -46,7 +46,7 @@
                                     @localizer["Surname"]
                                     <div class="templatemo-input-icon-container">
                                         <input asp-for="Input.Surname" class="form-control" />
-                                        <i class="fa fa-lock"></i>
+                                        <i class="fa fa-user"></i>
                                         <span asp-validation-for="Input.Surname" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@
                                     @localizer["Email"]
                                     <div class="templatemo-input-icon-container">
                                         <input asp-for="Input.Email" class="form-control" />
-                                        <i class="fa fa-lock"></i>
+                                        <i class="fa fa-user"></i>
                                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                                     </div>
                                 </div>

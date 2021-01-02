@@ -129,6 +129,9 @@
   <data name="Dashboard" xml:space="preserve">
     <value>Dashboard</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
   <data name="Posts" xml:space="preserve">
     <value>Posts</value>
   </data>
