@@ -22,11 +22,6 @@ namespace CafeDunyasi.Models
         [Required]
         public string City { get; set; }
 
-        //[Required]
-        //[StringLength(50)]
-        //[MaxLength(50)]
-        //public string EMail { get; set; }
-
         [Required]
         public string AvatarImg { get; set; }
 
