@@ -46,16 +46,20 @@
                     {
                         @if (x.PostID == item.Id)
                         {
-                            strColor = "blue";
-                            tmp = true;
+                            <button onclick="likeAt('@(item.Id)', '@(item.Id+item.UserID)')" name="data" style="all: unset; cursor: pointer; float:left; margin-right:5px"><i class="fa fa-heart" style="font-size:24px; color:blue" id="@item.Id"></i></button>
                         }
                         else
                         {
-                            strColor = "black";
+                            <button onclick="likeAt('@(item.Id)', '@(item.Id+item.UserID)')" name="data" style="all: unset; cursor: pointer; float:left; margin-right:5px"><i class="fa fa-heart" style="font-size:24px; color:black" id="@item.Id"></i></button>
                         }
+                        tmp = true;
                     }
                 }
-                <button onclick="likeAt('@(item.Id)', '@(item.Id+item.UserID)')" name="data" style="all: unset; cursor: pointer; float:left; margin-right:5px"><i class="fa fa-heart" style="font-size:24px; color: @(strColor)" id="@item.Id"></i></button>
+                @if (tmp == false)
+                {
+                    <button onclick="likeAt('@(item.Id)', '@(item.Id+item.UserID)')" name="data" style="all: unset; cursor: pointer; float:left; margin-right:5px"><i class="fa fa-heart" style="font-size:24px; color:black" id="@item.Id"></i></button>
+                }
+
                 @{
                     tmp = false;
                 }
@@ -88,7 +92,7 @@ else
             dataType: 'json',
             success: function (data) {
                 var a = document.getElementById(_id);
-                if (a.style.color == 'black') {
+                if (a.style.color === 'black') {
                     a.style.color = 'blue';
                 } else {
                     a.style.color = 'black';
