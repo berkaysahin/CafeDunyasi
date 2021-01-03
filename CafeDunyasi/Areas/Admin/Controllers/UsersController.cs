@@ -174,8 +174,16 @@ namespace CafeDunyasi.Areas.Admin.Controllers
             {
                 try
                 {
-                    await _userManager.SetUserNameAsync(user, user.Email);
-                    _context.Update(user);
+                    Users tmp = _context.Users.Single(x => x.Id == user.Id);
+                    if (user.Email != tmp.Email)
+                    {
+                        await _userManager.SetEmailAsync(tmp, user.Email);
+                        await _userManager.SetUserNameAsync(tmp, user.Email);
+                    }
+
+                    tmp.Name = user.Name;
+                    tmp.Surname = user.Surname;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
