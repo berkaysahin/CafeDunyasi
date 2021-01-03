@@ -14,48 +14,6 @@
 
 <h4>@localizer["BusinessInfo"]</h4>
 <hr />
-@*<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="UsersID" class="control-label"></label>
-                <input asp-for="UsersID" class="form-control" />
-                <span asp-validation-for="UsersID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AvatarImg" class="control-label"></label>
-                <input asp-for="AvatarImg" class="form-control" />
-                <span asp-validation-for="AvatarImg" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MenuImg" class="control-label"></label>
-                <input asp-for="MenuImg" class="form-control" />
-                <span asp-validation-for="MenuImg" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
-
-
 
 <div class="row">
     <div class="col-md-6">
@@ -76,13 +34,13 @@
             <img src="@("~/images/BusinessImages/profile/" + profileImg)" asp-append-version="true" />
             <div class="form-group">
                 @localizer["ProfileImage"]
-                    <input asp-for="ProfileImageUpdate" class="form-control" required multiple />
+                    <input asp-for="ProfileImageUpdate" class="form-control" multiple />
                     <span asp-validation-for="ProfileImageUpdate" class="text-danger"></span>
             </div>
             <img src="@("~/images/BusinessImages/menu/" + menuImg)" asp-append-version="true" />
             <div class="form-group">
                 @localizer["MenuImage"]
-                    <input asp-for="MenuImageUpdate" class="form-control" required multiple />
+                    <input asp-for="MenuImageUpdate" class="form-control" multiple />
                     <span asp-validation-for="MenuImageUpdate" class="text-danger"></span>
             </div>
             
