@@ -53,6 +53,10 @@ namespace CafeDunyasi.Controllers
             {
                 string fileName = "";
                 string uploadDir = Path.Combine(_hostEnvironment.WebRootPath, "images/BusinessImages/post");
+
+                if (!Directory.Exists(uploadDir))
+                    Directory.CreateDirectory(uploadDir);
+
                 fileName = Guid.NewGuid().ToString() + "-" + posts.ImageFile.FileName;
                 string filePath = Path.Combine(uploadDir, fileName);
 

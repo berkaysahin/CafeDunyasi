@@ -206,6 +206,10 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         private void DeleteFile(string path, string file)
         {
             string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+
+            if (!Directory.Exists(uploadDir))
+                return;
+
             string fileURL = Path.Combine(uploadDir, file);
 
             if (System.IO.File.Exists(fileURL))

@@ -10,9 +10,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
@@ -123,6 +120,11 @@ namespace CafeDunyasi.Areas.Admin.Controllers
             if (img != null)
             {
                 string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+
+                if (!Directory.Exists(uploadDir))
+                    Directory.CreateDirectory(uploadDir);
+                
+
                 fileName = Guid.NewGuid().ToString() + "-" + img.FileName;
                 string filePath = Path.Combine(uploadDir, fileName);
 
@@ -137,6 +139,10 @@ namespace CafeDunyasi.Areas.Admin.Controllers
         private void DeleteFile(string path, string file)
         {
             string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+
+            if (!Directory.Exists(uploadDir))
+                return;
+
             string fileURL = Path.Combine(uploadDir, file);
 
             if (System.IO.File.Exists(fileURL))

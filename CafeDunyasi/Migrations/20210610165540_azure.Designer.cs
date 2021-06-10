@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CafeDunyasi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201221200303_AzureDB")]
-    partial class AzureDB
+    [Migration("20210610165540_azure")]
+    partial class azure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,8 +79,8 @@ namespace CafeDunyasi.Migrations
                     b.Property<int>("BusinessID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

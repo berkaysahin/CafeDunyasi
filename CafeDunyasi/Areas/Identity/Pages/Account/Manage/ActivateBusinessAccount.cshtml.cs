@@ -124,6 +124,10 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
             if(img != null)
             {
                 string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+
+                if (!Directory.Exists(uploadDir))
+                    Directory.CreateDirectory(uploadDir);
+
                 fileName = Guid.NewGuid().ToString() + "-" + img.FileName;
                 string filePath = Path.Combine(uploadDir, fileName);
 
@@ -138,6 +142,10 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
         private void DeleteFile(string path, string file)
         {
             string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, path);
+
+            if (!Directory.Exists(uploadDir))
+                return;
+
             string fileURL = Path.Combine(uploadDir, file);
 
             if (System.IO.File.Exists(fileURL))
