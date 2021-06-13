@@ -265,7 +265,7 @@ namespace CafeDunyasi.Areas.Identity.Pages.Account.Manage
                     if(Input.MenuImageUpdate != null)
                     {
                         DeleteFile("images/BusinessImages/menu", bs.MenuImg);
-                        menuImage = UploadFile(Input.MenuImage, "images/BusinessImages/menu");
+                        menuImage = UploadFile(Input.MenuImageUpdate, "images/BusinessImages/menu");
                         bs.MenuImg = menuImage;
                     }
                 }
