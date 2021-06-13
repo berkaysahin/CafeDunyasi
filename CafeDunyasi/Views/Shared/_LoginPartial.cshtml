@@ -4,11 +4,18 @@
 
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
-<ul class="navbar-nav">
+<ul class="navbar-nav" >
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>
+    <li class="nav-item" style="padding-right: 10px; padding-bottom: 10px;">
+        @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>*@
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Manage/Index">
+            <button type="submit" class="btn btn-primary">@localizer["EditProfile"]</button>
+        </form>
+
+
+
+
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
